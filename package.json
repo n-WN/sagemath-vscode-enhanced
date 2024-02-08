@@ -9,24 +9,41 @@
   "icon": "./images/gptIcon.png",
   "activationEvents": [
     "onLanguage:sage"
-  ],  
+  ],
   "categories": [
     "Programming Languages",
     "Extension Packs"
   ],
-  "keywords": ["sagemath", "mathematics", "coding", "extension", "sage", "crypto", "ctf"],
+  "keywords": [
+    "sagemath",
+    "mathematics",
+    "coding",
+    "extension",
+    "sage",
+    "crypto",
+    "ctf"
+  ],
   "main": "./out/extension.js",
   "contributes": {
-    "languages": [{
-      "id": "sage",
-      "aliases": ["Sage", "sagemath"],
-      "extensions": [".sage"]
-    }],
-    "grammars": [{
-      "language": "sage",
-      "scopeName": "source.sage",
-      "path": "./syntaxes/sage.tmLanguage.json"
-    }],
+    "languages": [
+      {
+        "id": "sage",
+        "aliases": [
+          "Sage",
+          "sagemath"
+        ],
+        "extensions": [
+          ".sage"
+        ]
+      }
+    ],
+    "grammars": [
+      {
+        "language": "sage",
+        "scopeName": "source.sage",
+        "path": "./syntaxes/sage.tmLanguage.json"
+      }
+    ],
     "commands": [
       {
         "command": "runsagemathfile.run",
@@ -55,15 +72,15 @@
     "postinstall": "node ./scripts/postinstall"
   },
   "devDependencies": {
-    "@types/vscode": "^1.86.0",
     "@types/mocha": "^10.0.6",
     "@types/node": "18.x",
+    "@types/vscode": "^1.76.0",
     "@typescript-eslint/eslint-plugin": "^6.19.1",
     "@typescript-eslint/parser": "^6.19.1",
-    "eslint": "^8.56.0",
-    "typescript": "^5.3.3",
     "@vscode/test-cli": "^0.0.4",
-    "@vscode/test-electron": "^2.3.9"
+    "@vscode/test-electron": "^2.3.9",
+    "eslint": "^8.56.0",
+    "typescript": "^5.3.3"
   },
   "license": "AGPL-3.0"
 }
