@@ -2,11 +2,11 @@
   "name": "sagemath-enhanced",
   "displayName": "SageMath Enhanced",
   "description": "An enhanced VS Code extension for SageMath, providing advanced features and integrations.",
-  "version": "0.0.1",
+  "version": "1.0.0-rc.1",
   "engines": {
     "vscode": "^1.76.0"
   },
-  "icon": "./images/gptIcon.png",
+  "icon": "images/gptIcon.png",
   "activationEvents": [
     "onLanguage:sage"
   ],
@@ -23,7 +23,7 @@
     "crypto",
     "ctf"
   ],
-  "main": "./out/extension.js",
+  "main": "out/extension.js",
   "contributes": {
     "languages": [
       {
@@ -41,7 +41,7 @@
       {
         "language": "sage",
         "scopeName": "source.sage",
-        "path": "./syntaxes/sage.tmLanguage.json"
+        "path": "syntaxes/sage.tmLanguage.json"
       }
     ],
     "commands": [
@@ -68,8 +68,7 @@
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
     "test": "vscode-test",
-    "clean": "rimraf out",
-    "postinstall": "node ./scripts/postinstall"
+    "clean": "rimraf out"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.6",
@@ -82,5 +81,9 @@
     "eslint": "^8.56.0",
     "typescript": "^5.3.3"
   },
-  "license": "AGPL-3.0"
+  "license": "AGPL-3.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/n-WN/sagemath-vscode-enhanced.git"
+  }
 }
