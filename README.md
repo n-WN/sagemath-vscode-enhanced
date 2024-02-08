@@ -7,7 +7,8 @@ Enhance your SageMath coding experience in Visual Studio Code with the SageMath 
 - **Run SageMath Code**: Directly execute `.sage` files from the editor with a simple click.
 - **Syntax Highlighting**: Enjoy enhanced syntax highlighting tailored for SageMath-specific operations and functions.
 - **Integrated Terminal**: Interact with SageMath directly within VS Code's integrated terminal.
-- **Error Highlighting**: Get immediate feedback on syntax errors and computational exceptions to streamline your coding process.
+
+https://github.com/n-WN/sagemath-vscode-enhanced/assets/30841158/2a8d5cea-8c21-4886-8e18-b48893691fe4
 
 ## Quick Start
 
@@ -80,6 +81,7 @@ This project is licensed under the AGPL-3.0 License - see the [LICENSE](LICENSE)
 - [ ] **Documentation Integration**: Provide direct access to SageMath documentation via hover tooltips.
 - [ ] **Performance Optimization**: Improve startup time and responsiveness of the extension.
 - [ ] **Customizable Settings**: Introduce settings to customize the extension's behavior according to user preferences.
+- [ ] **Error Highlighting**: Get immediate feedback on syntax errors and computational exceptions to streamline your coding process.
 
 ## Acknowledgements
 
