@@ -1,0 +1,69 @@
+{
+  "name": "sagemath-enhanced",
+  "displayName": "SageMath Enhanced",
+  "description": "An enhanced VS Code extension for SageMath, providing advanced features and integrations.",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.76.0"
+  },
+  "icon": "./images/gptIcon.png",
+  "activationEvents": [
+    "onLanguage:sage"
+  ],  
+  "categories": [
+    "Programming Languages",
+    "Extension Packs"
+  ],
+  "keywords": ["sagemath", "mathematics", "coding", "extension", "sage", "crypto", "ctf"],
+  "main": "./out/extension.js",
+  "contributes": {
+    "languages": [{
+      "id": "sage",
+      "aliases": ["Sage", "sagemath"],
+      "extensions": [".sage"]
+    }],
+    "grammars": [{
+      "language": "sage",
+      "scopeName": "source.sage",
+      "path": "./syntaxes/sage.tmLanguage.json"
+    }],
+    "commands": [
+      {
+        "command": "runsagemathfile.run",
+        "title": "Run SageMath File",
+        "icon": "$(play)"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "when": "resourceLangId == sage",
+          "command": "runsagemathfile.run",
+          "group": "navigation"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "vscode-test",
+    "clean": "rimraf out",
+    "postinstall": "node ./scripts/postinstall"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.86.0",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "18.x",
+    "@typescript-eslint/eslint-plugin": "^6.19.1",
+    "@typescript-eslint/parser": "^6.19.1",
+    "eslint": "^8.56.0",
+    "typescript": "^5.3.3",
+    "@vscode/test-cli": "^0.0.4",
+    "@vscode/test-electron": "^2.3.9"
+  },
+  "license": "AGPL-3.0"
+}

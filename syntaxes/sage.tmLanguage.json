@@ -1,0 +1,43 @@
+{
+    "fileTypes": ["sage"],
+    "scopeName": "source.sage",
+    "name": "Sage",
+    "patterns": [
+        {
+            "include": "source.python"
+        },
+        {
+            "match": "\\b(ZZ|RR|CC|QQ|Mod|PolynomialRing|var)\\b",
+            "name": "support.class.sage"
+        },
+        {
+            "match": "\\b(gens|factor|plot)\\b\\(",
+            "name": "support.function.sage"
+        },
+        {
+            "begin": "var\\(",
+            "end": "\\)",
+            "name": "support.variable.sage",
+            "patterns": [
+                {
+                    "match": "[a-zA-Z_][a-zA-Z0-9_]*",
+                    "name": "variable.parameter.sage"
+                }
+            ]
+        },
+        {
+            "match": "\\^\\^",
+            "name": "keyword.operator.logical.sage"
+        }
+    ],
+    "repository": {
+        "variables": {
+            "patterns": [
+                {
+                    "match": "\\b[a-zA-Z_][a-zA-Z0-9_]*\\b",
+                    "name": "variable.other.sage"
+                }
+            ]
+        }
+    }
+}
