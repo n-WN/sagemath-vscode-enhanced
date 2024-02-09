@@ -7,6 +7,10 @@ Enhance your SageMath coding experience in Visual Studio Code with the SageMath 
 - **Run SageMath Code**: Directly execute `.sage` files from the editor with a simple click.
 - **Syntax Highlighting**: Enjoy enhanced syntax highlighting tailored for SageMath-specific operations and functions.
 - **Integrated Terminal**: Interact with SageMath directly within VS Code's integrated terminal.
+- **Automatic `.sage.py` File Cleanup**: Automatically deletes the temporary `.sage.py` file generated after running a SageMath script, keeping your workspace clean.
+- **WSL Support**: For Windows users, run SageMath scripts inside the Windows Subsystem for Linux (WSL) for improved compatibility and performance.
+
+![Run SageMath File Button](images/start.png) *👆🏻 the Run SageMath File button, 👇🏻 Demo video*
 
 https://github.com/n-WN/sagemath-vscode-enhanced/assets/30841158/2a8d5cea-8c21-4886-8e18-b48893691fe4
 
@@ -33,23 +37,13 @@ Using the SageMath Enhanced extension is simple and intuitive, providing a seaml
 ### Opening and Running SageMath Files
 
 1. **Opening a Sage File**: Open your `.sage` file in VS Code, or create a new one by selecting `File > New File` and saving it with the `.sage` extension.
-
 2. **Running the Code**: Once a `.sage` file is open in the editor, you'll notice a **Run SageMath File** button (▶️ icon) in the editor's title bar. Clicking this button will execute the SageMath code in the currently active `.sage` file.
-
-    ![Run SageMath File Button](images/start.png) *(Screenshot showing the button)*
-
-    Alternatively, you can also run your SageMath script by opening the Command Palette (`Ctrl+Shift+P` or `Cmd+Shift+P`), typing `Run SageMath File`, and pressing `Enter`. This will execute the code in the integrated terminal, where you can view the results and any error messages.
+3. **Automatic Cleanup**: If enabled in the extension settings, the temporary `.sage.py` file generated during execution will be automatically deleted after the script finishes running.
+4. **WSL Support**: If you're on Windows and have WSL installed, the extension can run SageMath scripts inside WSL for enhanced compatibility.
 
 ### Viewing Output
 
 - **Integrated Terminal**: The output from your SageMath script, along with any errors or warnings, will be displayed in VS Code's integrated terminal. This allows for easy debugging and interaction with your code.
-
-<!-- ### Additional Features
-
-- **Syntax Highlighting**: Enjoy enhanced syntax highlighting specific to SageMath, making your code easier to read and understand.
-- **Error Highlighting**: Get instant feedback on syntax errors and computational exceptions, helping you to quickly identify and resolve issues in your code.
-
-By integrating SageMath directly into your VS Code environment, the SageMath Enhanced extension streamlines your mathematical and computational workflow, making it more efficient and enjoyable. -->
 
 ## Requirements
 
@@ -60,7 +54,7 @@ By integrating SageMath directly into your VS Code environment, the SageMath Enh
 
 We welcome contributions to the SageMath Enhanced extension. Here's how you can contribute:
 
-1. Fork the repository on GitHub. You can find the repository at [sagemath-vscode-enhanced](git@github.com:n-WN/sagemath-vscode-enhanced.git).
+1. Fork the repository on GitHub. You can find the repository at [sagemath-vscode-enhanced](https://github.com/n-WN/sagemath-vscode-enhanced).
 2. Create a new branch for your feature (`git checkout -b feature/YourFeature`).
 3. Commit your changes (`git commit -am 'Add some YourFeature'`).
 4. Push to the branch (`git push origin feature/YourFeature`).
@@ -74,14 +68,17 @@ If you encounter any issues or have suggestions for improvements, please file an
 
 This project is licensed under the AGPL-3.0 License - see the [LICENSE](LICENSE) file for details.
 
-## TODO
+## TODO (Also Known As "Need Help")
 
 - [ ] **Code Completion**: Enhance code completion for SageMath-specific syntax.
 - [ ] **Interactive Plots**: Enable rendering of interactive SageMath plots within VS Code.
 - [ ] **Documentation Integration**: Provide direct access to SageMath documentation via hover tooltips.
 - [ ] **Performance Optimization**: Improve startup time and responsiveness of the extension.
 - [ ] **Customizable Settings**: Introduce settings to customize the extension's behavior according to user preferences.
-- [ ] **Error Highlighting**: Get immediate feedback on syntax errors and computational exceptions to streamline your coding process.
+- [ ] **Error Highlighting**: Provide immediate feedback on syntax errors and computational exceptions to streamline the coding process.
+- [ ] **Indentation and Autocomplete**: Currently, there might be issues with indentation shortcuts and the inability to autocomplete brackets and quotes. These advanced editing features might require the implementation or integration of a language server.
+
+<!-- For the issues with indentation and autocomplete, if they cannot be resolved through simple configuration changes, it might indeed necessitate the assistance of a more sophisticated language server (such as implementing a Language Server Protocol server specifically for SageMath) to provide advanced support similar to what Pylance does for Python. This could involve a significant development effort, including a deep understanding of SageMath syntax and features, as well as integration with VS Code's language server APIs. -->
 
 ## Acknowledgements
 
