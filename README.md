@@ -36,7 +36,7 @@ Using the SageMath Enhanced extension is simple and intuitive, providing a seaml
 
 2. **Running the Code**: Once a `.sage` file is open in the editor, you'll notice a **Run SageMath File** button (▶️ icon) in the editor's title bar. Clicking this button will execute the SageMath code in the currently active `.sage` file.
 
-    ![Run SageMath File Button](path/to/your/screenshot.png) *(Consider adding a screenshot showing the button)*
+    ![Run SageMath File Button](images/start.png) *(Consider adding a screenshot showing the button)*
 
     Alternatively, you can also run your SageMath script by opening the Command Palette (`Ctrl+Shift+P` or `Cmd+Shift+P`), typing `Run SageMath File`, and pressing `Enter`. This will execute the code in the integrated terminal, where you can view the results and any error messages.
 
