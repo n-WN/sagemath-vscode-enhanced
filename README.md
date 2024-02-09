@@ -1,4 +1,29 @@
-# SageMath Enhanced for VS Code
+<p align="center">
+  <img src="images/gptGenIcon.png" width="25%" />
+</p>
+
+<h1 align="center">SageMath Enhanced for VS Code</h1>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/license-AGPL--3.0-blue" alt="License">
+  <a href="https://github.com/n-WN/sagemath-vscode-enhanced/issues">
+    <img src="https://img.shields.io/github/issues/n-WN/sagemath-vscode-enhanced" alt="GitHub issues">
+  </a>
+  <img src="https://img.shields.io/github/languages/count/n-WN/sagemath-vscode-enhanced"  alt="GitHub languages">
+  <img src="https://img.shields.io/github/last-commit/n-WN/sagemath-vscode-enhanced" alt="last commit">
+  <img src="https://img.shields.io/visual-studio-marketplace/last-updated/Lov3.sagemath-enhanced" alt="visual-studio-marketplace-last-updated">
+  <a href="https://github.com/n-WN/sagemath-vscode-enhanced/network">
+    <img src="https://img.shields.io/github/forks/n-WN/sagemath-vscode-enhanced" alt="GitHub forks">
+  </a>
+  <a href="https://github.com/n-WN/sagemath-vscode-enhanced/stargazers">
+    <img src="https://img.shields.io/github/stars/n-WN/sagemath-vscode-enhanced" alt="GitHub stars">
+  </a>
+  <img src="https://img.shields.io/github/languages/top/n-WN/sagemath-vscode-enhanced?style=social" alt="languages-top">
+</p>
+
+<p align="center">
+  <a href="README.md">English</a> | <a href="README.zh.md">中文</a>
+</p>
 
 Enhance your SageMath coding experience in Visual Studio Code with the SageMath Enhanced extension. This extension provides advanced features and integrations, making it easier and more efficient to work with SageMath in VS Code.
 
@@ -8,7 +33,7 @@ Enhance your SageMath coding experience in Visual Studio Code with the SageMath 
 - **Syntax Highlighting**: Enjoy enhanced syntax highlighting tailored for SageMath-specific operations and functions.
 - **Integrated Terminal**: Interact with SageMath directly within VS Code's integrated terminal.
 - **Automatic `.sage.py` File Cleanup**: Automatically deletes the temporary `.sage.py` file generated after running a SageMath script, keeping your workspace clean.
-- **WSL Support**: For Windows users, run SageMath scripts inside the Windows Subsystem for Linux (WSL) for improved compatibility and performance.
+- **WSL Support(Fixing)**: For Windows users, run SageMath scripts inside the Windows Subsystem for Linux (WSL) for improved compatibility and performance.
 
 ![Run SageMath File Button](images/start.png) *👆🏻 the Run SageMath File button, 👇🏻 Demo video*
 
