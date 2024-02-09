@@ -1,41 +1,115 @@
 {
-    "fileTypes": ["sage"],
+    "fileTypes": [
+        "sage"
+    ],
     "scopeName": "source.sage",
     "name": "Sage",
     "patterns": [
         {
+            "include": "#sageSpecific"
+        },
+        {
             "include": "source.python"
-        },
-        {
-            "match": "\\b(ZZ|RR|CC|QQ|Mod|PolynomialRing|var)\\b",
-            "name": "support.class.sage"
-        },
-        {
-            "match": "\\b(gens|factor|plot)\\b\\(",
-            "name": "support.function.sage"
-        },
-        {
-            "begin": "var\\(",
-            "end": "\\)",
-            "name": "support.variable.sage",
-            "patterns": [
-                {
-                    "match": "[a-zA-Z_][a-zA-Z0-9_]*",
-                    "name": "variable.parameter.sage"
-                }
-            ]
-        },
-        {
-            "match": "\\^\\^",
-            "name": "keyword.operator.logical.sage"
         }
     ],
     "repository": {
+        "sageSpecific": {
+            "patterns": [
+                {
+                    "match": "\\b(ZZ|RR|CC|QQ|Mod|PolynomialRing|var|Zmod)\\b",
+                    "name": "support.class.sage"
+                },
+                {
+                    "match": "\\b(gens|factor|plot|matrix)\\b\\(",
+                    "name": "support.function.sage"
+                },
+                {
+                    "begin": "var\\(",
+                    "end": "\\)",
+                    "name": "support.variable.sage",
+                    "patterns": [
+                        {
+                            "match": "[a-zA-Z_][a-zA-Z0-9_]*",
+                            "name": "variable.parameter.sage"
+                        }
+                    ]
+                },
+                {
+                    "match": "\\^\\^",
+                    "name": "keyword.operator.logical.sage"
+                },
+                {
+                    "begin": "([a-zA-Z_][a-zA-Z0-9_]*)\\.<([a-zA-Z_][a-zA-Z0-9_, ]*)>",
+                    "beginCaptures": {
+                        "1": {
+                            "name": "variable.other.polynomial-ring.sage"
+                        },
+                        "2": {
+                            "name": "variable.parameter.polynomial.sage"
+                        }
+                    },
+                    "end": "=",
+                    "endCaptures": {
+                        "0": {
+                            "name": "keyword.operator.assignment.sage"
+                        }
+                    },
+                    "name": "meta.polynomial-ring-definition.sage",
+                    "patterns": [
+                        {
+                            "include": "#variables"
+                        }
+                    ]
+                },
+                {
+                    "match": "\\bTrue\\b|\\bFalse\\b",
+                    "name": "constant.language.boolean.sage"
+                }
+            ]
+        },
         "variables": {
             "patterns": [
                 {
                     "match": "\\b[a-zA-Z_][a-zA-Z0-9_]*\\b",
                     "name": "variable.other.sage"
+                }
+            ]
+        },
+        "comments": {
+            "patterns": [
+                {
+                    "name": "comment.line.number-sign.sage",
+                    "match": "#.*$"
+                },
+                {
+                    "begin": "'''",
+                    "beginCaptures": {
+                        "0": {
+                            "name": "punctuation.definition.comment.begin.sage"
+                        }
+                    },
+                    "end": "'''",
+                    "endCaptures": {
+                        "0": {
+                            "name": "punctuation.definition.comment.end.sage"
+                        }
+                    },
+                    "name": "comment.block.sage"
+                },
+                {
+                    "begin": "\"\"\"",
+                    "beginCaptures": {
+                        "0": {
+                            "name": "punctuation.definition.comment.begin.sage"
+                        }
+                    },
+                    "end": "\"\"\"",
+                    "endCaptures": {
+                        "0": {
+                            "name": "punctuation.definition.comment.end.sage"
+                        }
+                    },
+                    "name": "comment.block.sage"
                 }
             ]
         }

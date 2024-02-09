@@ -3,13 +3,12 @@
   "publisher": "Lov3",
   "displayName": "SageMath Enhanced",
   "description": "An enhanced VS Code extension for SageMath, providing advanced features and integrations.",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "engines": {
     "vscode": "^1.76.0"
   },
   "icon": "images/gptIcon.png",
   "activationEvents": [
-    "onLanguage:sage"
   ],
   "categories": [
     "Programming Languages",
@@ -35,9 +34,25 @@
         ],
         "extensions": [
           ".sage"
-        ]
+        ],
+        "configuration": "syntaxes/sage.tmLanguage.json"
       }
     ],
+    "configuration": {
+      "title": "SageMath Enhanced",
+      "properties": {
+        "sagemathEnhanced.autoDeleteGeneratedFile": {
+          "type": "boolean",
+          "default": false,
+          "description": "Automatically delete the generated .sage.py file after running a SageMath script."
+        },
+        "sagemathEnhanced.useWSL": {
+          "type": "boolean",
+          "default": false,
+          "description": "Use WSL (Windows Subsystem for Linux) to run SageMath scripts."
+        }
+      }
+    },
     "grammars": [
       {
         "language": "sage",
