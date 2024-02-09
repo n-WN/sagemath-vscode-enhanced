@@ -16,7 +16,7 @@
         "sageSpecific": {
             "patterns": [
                 {
-                    "match": "\\b(ZZ|RR|CC|QQ|Mod|PolynomialRing|var|Zmod)\\b",
+                    "match": "\\b(ZZ|RR|CC|QQ|Mod|mod|PolynomialRing|var|Zmod)\\b",
                     "name": "support.class.sage"
                 },
                 {
