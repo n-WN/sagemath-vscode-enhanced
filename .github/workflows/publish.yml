@@ -25,13 +25,23 @@ jobs:
       - name: Compile TypeScript
         run: npm run compile
 
+      - name: Install latest version of @vscode/vsce
+        run: npm install -g @vscode/vsce@latest
+
       - name: Package VSIX
-        run: npx vsce package -o out
+        run: npx vsce package
+
+      - name: Get package version
+        id: get_version
+        run: echo "::set-output name=version::$(node -p "require('./package.json').version")"
+
+      - name: List Files
+        run: ls
 
       - name: Create GitHub Release
         if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v1
         with:
-          files: out/*.vsix
+          files: sagemath-enhanced-${{ steps.get_version.outputs.version }}.vsix
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
