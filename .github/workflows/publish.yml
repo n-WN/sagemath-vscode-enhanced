@@ -1,29 +1,36 @@
-name: Build and Release
+name: Build and Publish Release
 
 on:
   push:
-    tags:
-      - 'v*'
+    branches:
+      - main
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
+      - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: '14'
+          node-version: 14
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: npm install
+
+      - name: Run Linter
+        run: npm run lint
+
+      - name: Run Tests
+        run: npm run test
 
       - name: Compile TypeScript
         run: npm run compile
 
-      - name: Package Extension
+      - name: Package VSIX
         run: npx vsce package
 
       - name: Create Release
@@ -43,6 +50,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./sagemath-enhanced-*.vsix
+          asset_path: ./sagemath-enhanced-${{ steps.version.outputs.version }}.vsix
           asset_name: sagemath-enhanced.vsix
           asset_content_type: application/octet-stream
