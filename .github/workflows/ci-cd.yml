@@ -21,9 +21,8 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    - name: Build and Test
-      run: npm run build
+    - name: Compile TypeScript
+      run: npm run compile
 
     - name: Deploy to Server
       run: ssh -i ${{ secrets.DEPLOY_KEY }} user@server "commands to deploy application"
-
