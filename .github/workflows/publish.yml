@@ -32,7 +32,11 @@ jobs:
         run: npx vsce package
 
       - name: Get package version
-        run: echo "$(node -p "require('./package.json').version")" >> $GITHUB_ENV
+        id: get_version
+        run: echo "$(node -p "require('./package.json').version")"
+
+      - name: Set version output
+        run: echo "VERSION=${{ steps.get_version.outputs.stdout }}" >> $GITHUB_ENV
 
       - name: List Files
         run: ls
