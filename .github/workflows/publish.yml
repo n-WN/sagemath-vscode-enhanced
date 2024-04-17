@@ -25,13 +25,13 @@ jobs:
       - name: Compile TypeScript
         run: npm run compile
 
-      - name: Package VSIX (Optional)
-        run: npx vsce package
+      - name: Package VSIX
+        run: npx vsce package -o out
 
-      - name: Create GitHub Release (Optional)
+      - name: Create GitHub Release
         if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v1
         with:
-          files: '*.vsix'
+          files: out/*.vsix
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
