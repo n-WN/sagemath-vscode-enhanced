@@ -53,7 +53,7 @@ function activate(context) {
         terminal.show();
         let command;
         if (process.platform === 'win32' && vscode.workspace.getConfiguration().get('sagemathEnhanced.useWSL')) {
-            command = `wsl cd "${fileDir}" && wsl sage "${fileName}"`;
+            command = `cd "${fileDir}" && wsl sage "${fileName}"`; // 临时方案, 似乎并不能唤起远程, 仅在vscode ssh到wsl时可用
         }
         else if (process.platform === 'win32') {
             command = `cd "${fileDir.replace(/\//g, '\\')}" && sage "${fileName}"`;

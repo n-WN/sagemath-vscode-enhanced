@@ -1,0 +1,27 @@
+# 依赖目录
+node_modules/
+
+# IDE配置
+.vscode/
+
+# 测试框架
+.vscode-test/
+
+# 构建产物
+**/*.map
+
+# 系统文件
+.DS_Store
+
+# 项目配置
+.gitignore
+.vscodeignore
+
+# 其他常见忽略项
+**/*.log
+**/tmp/
+**/dist/
+
+# 排除不应被忽略的文件
+!.gitignore
+!.vscodeignore
