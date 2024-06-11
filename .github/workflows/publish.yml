@@ -41,10 +41,14 @@ jobs:
       - name: List Files
         run: ls
 
-      - name: Create GitHub Release
-        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
-        uses: softprops/action-gh-release@v1
+      - name: Get package version
+        run: echo "VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_ENV
+
+      - name: GH Release Action
+        uses: zcubbs/gh-release-action@v1.0.6
         with:
+          major: ${{ env.VERSION_MAJOR }}
+          minor: ${{ env.VERSION_MINOR }}
+          patch: ${{ env.VERSION_PATCH }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           files: sagemath-enhanced-${{ env.VERSION }}.vsix
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
