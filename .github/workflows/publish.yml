@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -34,8 +36,8 @@ jobs:
       - name: List Files
         run: ls
 
-      - name: Get package version
-        id: get_version
+      - name: Get package version1
+        id: get_version1
         run: |
           VERSION=$(node -p "require('./package.json').version")
           echo "VERSION=$VERSION" >> $GITHUB_ENV
@@ -47,11 +49,29 @@ jobs:
       - name: List Files
         run: ls
 
-      - name: GH Release Action
-        uses: zcubbs/gh-release-action@v1.0.6
+      # - name: GH Release Action
+      #   uses: zcubbs/gh-release-action@v1.0.6
+      #   with:
+      #     major: ${{ env.VERSION_MAJOR }}
+      #     minor: ${{ env.VERSION_MINOR }}
+      #     patch: ${{ env.VERSION_PATCH }}
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+      #     files: sagemath-enhanced-${{ env.VERSION }}.vsix
+      - name: Get package version2
+        id: get_version2
+        run: echo "VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_ENV
+
+      - name: List Files
+        run: ls
+
+      - name: Build
+        run: echo "Build complete"
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
         with:
-          major: ${{ env.VERSION_MAJOR }}
-          minor: ${{ env.VERSION_MINOR }}
-          patch: ${{ env.VERSION_PATCH }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          files: sagemath-enhanced-${{ env.VERSION }}.vsix
+          files: sagemath-enhanced-${{ env.VERSION }}.vsix  # 指定要上传的文件
+          token: ${{ secrets.GITHUB_TOKEN }}  # 使用 GitHub Token 来认证
+          draft: false  # 指定这不是一个草稿版本
+          prerelease: false  # 指定这不是一个预发布版本
+          generate_release_notes: true  # 自动生成发布说明
