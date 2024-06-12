@@ -61,9 +61,6 @@ jobs:
         id: get_version2
         run: echo "VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_ENV
 
-      - name: List Files
-        run: ls
-
       - name: Build
         run: echo "Build complete"
 
@@ -71,7 +68,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: sagemath-enhanced-${{ env.VERSION }}.vsix  # 指定要上传的文件
-          token: ${{ secrets.GITHUB_TOKEN }}  # 使用 GitHub Token 来认证
+          token: ${{ secrets.DEPLOY_KEY }}  # 使用 GitHub Token 来认证
           draft: false  # 指定这不是一个草稿版本
           prerelease: false  # 指定这不是一个预发布版本
           generate_release_notes: true  # 自动生成发布说明
