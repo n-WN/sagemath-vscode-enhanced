@@ -75,3 +75,4 @@ jobs:
           draft: false  # 指定这不是一个草稿版本
           prerelease: false  # 指定这不是一个预发布版本
           generate_release_notes: true  # 自动生成发布说明
+          tag_name: ${{ github.ref_name }}  # 使用推送的标签名
