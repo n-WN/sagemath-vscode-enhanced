@@ -49,6 +49,11 @@
           "type": "boolean",
           "default": false,
           "description": "Use WSL (Windows Subsystem for Linux) to run SageMath scripts."
+        },
+        "sagemathEnhanced.interpreterPath": {
+          "type": "string",
+          "default": "sage",
+          "description": "Path to the SageMath interpreter"
         }
       }
     },
