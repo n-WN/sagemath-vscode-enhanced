@@ -50,7 +50,7 @@ export function activate(context: vscode.ExtensionContext) {
         }
         // For win32, wrapped by `cmd /c`, because PowerShell 5.1 has no && operator
         if (process.platform === 'win32') {
-            command = `cmd /c "${command.replaceAll('"', '""')}"`
+            command = `cmd /c "${command.replaceAll('"', '""')}"`;
         }
 
         // 作为单一命令执行
