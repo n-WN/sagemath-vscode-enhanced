@@ -2,6 +2,10 @@
     "fileTypes": [
         "sage"
     ],
+    "comments": {
+        "lineComment": "#",
+        "blockComment": ["'''", "'''"]
+    },
     "scopeName": "source.sage",
     "name": "Sage",
     "patterns": [
