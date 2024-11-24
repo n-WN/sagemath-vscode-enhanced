@@ -2,6 +2,10 @@
     "fileTypes": [
         "sage"
     ],
+    "comments": {
+        "lineComment": "#",
+        "blockComment": ["'''", "'''"]
+    },
     "scopeName": "source.sage",
     "name": "Sage",
     "patterns": [
@@ -11,6 +15,22 @@
         {
             "include": "source.python"
         }
+    ],
+    "brackets": [
+        ["{", "}"],
+        ["[", "]"],
+        ["(", ")"]
+    ],
+    "autoClosingPairs": [
+        { "open": "{", "close": "}" },
+        { "open": "[", "close": "]" },
+        { "open": "(", "close": ")" },
+        { "open": "'", "close": "'", "notIn": ["string", "comment"] },
+        { "open": "\"", "close": "\"", "notIn": ["string", "comment"] }
+    ],
+    "surroundingPairs": [
+          ["'", "'"],
+          ["\"", "\""]
     ],
     "repository": {
         "sageSpecific": {
