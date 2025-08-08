@@ -33,6 +33,8 @@
 - **语法高亮**：享受为SageMath特定操作和函数量身定做的增强语法高亮。
 - **集成终端**：直接在VS Code的集成终端中与SageMath交互。
 - **自动`.sage.py`文件清理**：运行SageMath脚本后自动删除临时生成的`.sage.py`文件，保持您的工作空间整洁。
+- **自定义命令参数**：为SageMath解释器配置额外的命令参数（例如：`-python`标志以兼容pwntools）。
+- **交互式故障排除**：内置故障排除命令，帮助解决常见的执行问题。
 - **WSL支持（修复中）**：对于Windows用户，可在Windows子系统Linux（WSL）内运行SageMath脚本，以提高兼容性和性能。
 
 ![运行SageMath文件按钮](images/start.png) *👆🏻 运行 SageMath 文件按钮的屏幕截图，👇🏻 演示视频（下载或打开 Github 仓库在线观看）*
@@ -69,6 +71,23 @@ https://github.com/n-WN/sagemath-vscode-enhanced/assets/30841158/2a8d5cea-8c21-4
 ### 查看输出
 
 - **集成终端**：您的SageMath脚本输出以及任何错误或警告将显示在VS Code的集成终端中。这允许轻松调试和与您的代码交互。
+
+### 故障排除执行问题
+
+如果您在运行SageMath脚本时遇到问题（例如pwntools兼容性问题），请使用内置的故障排除功能：
+
+1. **访问故障排除**：
+   - 打开命令面板（`Ctrl+Shift+P` / `Cmd+Shift+P`）并输入"SageMath: Troubleshoot Execution Issues"
+   - 或在`.sage`文件中右键点击并选择"SageMath: Troubleshoot Execution Issues"
+
+2. **可用选项**：
+   - **修复pwntools/curses兼容性问题**：自动添加`-python`标志以绕过SageMath环境初始化
+   - **自定义命令参数**：手动指定任何命令参数（例如：`--verbose`、`--debug`）
+   - **查看当前配置**：查看当前使用的命令结构
+
+3. **常见问题**：
+   - **pwntools兼容性**：如果您看到`_curses.error: setupterm: could not find terminfo database`错误，请使用pwntools修复选项
+   - **自定义需求**：使用自定义参数选项为您的用例添加任何特定标志
 
 ## 要求
 

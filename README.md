@@ -33,6 +33,8 @@ Enhance your SageMath coding experience in Visual Studio Code with the SageMath 
 - **Syntax Highlighting**: Enjoy enhanced syntax highlighting tailored for SageMath-specific operations and functions.
 - **Integrated Terminal**: Interact with SageMath directly within VS Code's integrated terminal.
 - **Automatic `.sage.py` File Cleanup**: Automatically deletes the temporary `.sage.py` file generated after running a SageMath script, keeping your workspace clean.
+- **Custom Command Arguments**: Configure additional command arguments for the SageMath interpreter (e.g., `-python` flag for pwntools compatibility).
+- **Interactive Troubleshooting**: Built-in troubleshooting command to help resolve common execution issues.
 - **WSL Support(Fixing)**: For Windows users, run SageMath scripts inside the Windows Subsystem for Linux (WSL) for improved compatibility and performance.
 
 ![Run SageMath File Button](images/start.png) *👆🏻 the Run SageMath File button, 👇🏻 Demo video*
@@ -69,6 +71,23 @@ Using the SageMath Enhanced extension is simple and intuitive, providing a seaml
 ### Viewing Output
 
 - **Integrated Terminal**: The output from your SageMath script, along with any errors or warnings, will be displayed in VS Code's integrated terminal. This allows for easy debugging and interaction with your code.
+
+### Troubleshooting Execution Issues
+
+If you encounter issues when running SageMath scripts (such as pwntools compatibility problems), use the built-in troubleshooting feature:
+
+1. **Access Troubleshooting**: 
+   - Open the Command Palette (`Ctrl+Shift+P` / `Cmd+Shift+P`) and type "SageMath: Troubleshoot Execution Issues"
+   - Or right-click in a `.sage` file and select "SageMath: Troubleshoot Execution Issues"
+
+2. **Available Options**:
+   - **Fix pwntools/curses compatibility issues**: Automatically adds the `-python` flag to bypass SageMath environment initialization
+   - **Custom command arguments**: Manually specify any command arguments (e.g., `--verbose`, `--debug`)
+   - **View current configuration**: See the current command structure being used
+
+3. **Common Issues**:
+   - **pwntools compatibility**: If you see `_curses.error: setupterm: could not find terminfo database`, use the pwntools fix option
+   - **Custom requirements**: Use the custom arguments option to add any specific flags your use case requires
 
 ## Requirements
 
