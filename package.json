@@ -54,6 +54,11 @@
           "type": "string",
           "default": "sage",
           "description": "Path to the SageMath interpreter"
+        },
+        "sagemathEnhanced.commandArguments": {
+          "type": "string",
+          "default": "",
+          "description": "Additional command arguments for the SageMath interpreter (e.g., '-python' to fix pwntools compatibility issues)"
         }
       }
     },

@@ -17,6 +17,7 @@ export function activate(context: vscode.ExtensionContext) {
         }
 
         const sagePath = vscode.workspace.getConfiguration().get('sagemathEnhanced.interpreterPath');
+        const commandArgs = vscode.workspace.getConfiguration().get('sagemathEnhanced.commandArguments');
 
         const filePath = document.fileName;
         const fileDir = path.dirname(filePath);
@@ -35,12 +36,13 @@ export function activate(context: vscode.ExtensionContext) {
         terminal.show();
 
         let command;
+        const baseCommand = commandArgs ? `${sagePath} ${commandArgs}` : sagePath;
         if (process.platform === 'win32' && vscode.workspace.getConfiguration().get('sagemathEnhanced.useWSL')) {
-            command = `cd "${fileDir}" && wsl ${sagePath} "${fileName}"`; // 临时方案, 似乎并不能唤起远程, 仅在vscode ssh到wsl时可用
+            command = `cd "${fileDir}" && wsl ${baseCommand} "${fileName}"`; // 临时方案, 似乎并不能唤起远程, 仅在vscode ssh到wsl时可用
         } else if (process.platform === 'win32') {
-            command = `cd "${fileDir.replace(/\//g, '\\')}" && ${sagePath} "${fileName}"`;
+            command = `cd "${fileDir.replace(/\//g, '\\')}" && ${baseCommand} "${fileName}"`;
         } else {
-            command = `cd "${fileDir}" && ${sagePath} "${fileName}"`;
+            command = `cd "${fileDir}" && ${baseCommand} "${fileName}"`;
         }
 
         // 如果启用了自动删除，并且在执行前文件不存在，则附加删除命令
