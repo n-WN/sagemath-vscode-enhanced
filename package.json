@@ -54,6 +54,11 @@
           "type": "string",
           "default": "sage",
           "description": "Path to the SageMath interpreter"
+        },
+        "sagemathEnhanced.notebookKernelEnabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable SageMath kernel for Jupyter notebooks"
         }
       }
     },
@@ -62,6 +67,14 @@
         "language": "sage",
         "scopeName": "source.sage",
         "path": "syntaxes/sage.tmLanguage.json"
+      },
+      {
+        "language": "sage",
+        "scopeName": "source.sage",
+        "path": "syntaxes/sage.tmLanguage.json",
+        "embeddedLanguages": {
+          "meta.embedded.block.python": "python"
+        }
       }
     ],
     "commands": [
@@ -69,6 +82,17 @@
         "command": "runsagemathfile.run",
         "title": "Run SageMath File",
         "icon": "$(play)"
+      }
+    ],
+    "notebooks": [
+      {
+        "type": "jupyter-notebook",
+        "displayName": "Jupyter Notebook",
+        "selector": [
+          {
+            "filenamePattern": "*.ipynb"
+          }
+        ]
       }
     ],
     "menus": {

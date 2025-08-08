@@ -1,8 +1,10 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs'; // 引入文件系统模块
+import { SageMathNotebookController } from './notebookController';
 
 export function activate(context: vscode.ExtensionContext) {
+    // Register the existing file execution command
     let disposable = vscode.commands.registerCommand('runsagemathfile.run', () => {
         const editor = vscode.window.activeTextEditor;
         if (!editor) {
@@ -57,7 +59,11 @@ export function activate(context: vscode.ExtensionContext) {
         terminal.sendText(command);
     });
 
+    // Register the notebook controller for SageMath
+    const notebookController = new SageMathNotebookController();
+
     context.subscriptions.push(disposable);
+    context.subscriptions.push(notebookController);
 }
 
 export function deactivate() { }
