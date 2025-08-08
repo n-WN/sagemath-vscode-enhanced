@@ -22,6 +22,9 @@ node_modules/
 **/tmp/
 **/dist/
 
+# 测试文件
+test_syntax.sage
+
 # 排除不应被忽略的文件
 !.gitignore
 !.vscodeignore
