@@ -30,6 +30,7 @@ Enhance your SageMath coding experience in Visual Studio Code with the SageMath 
 ## Features
 
 - **Run SageMath Code**: Directly execute `.sage` files from the editor with a simple click.
+- **Jupyter Notebook Support**: Execute SageMath code in Jupyter notebook cells with dedicated kernel support.
 - **Syntax Highlighting**: Enjoy enhanced syntax highlighting tailored for SageMath-specific operations and functions.
 - **Integrated Terminal**: Interact with SageMath directly within VS Code's integrated terminal.
 - **Automatic `.sage.py` File Cleanup**: Automatically deletes the temporary `.sage.py` file generated after running a SageMath script, keeping your workspace clean.
@@ -66,9 +67,17 @@ Using the SageMath Enhanced extension is simple and intuitive, providing a seaml
 3. **Automatic Cleanup**: If enabled in the extension settings, the temporary `.sage.py` file generated during execution will be automatically deleted after the script finishes running.
 4. **WSL Support**: If you're on Windows and have WSL installed, the extension can run SageMath scripts inside WSL for enhanced compatibility.
 
+### Using SageMath in Jupyter Notebooks
+
+1. **Open a Jupyter Notebook**: Open any `.ipynb` file in VS Code (requires the Jupyter extension).
+2. **Select SageMath Kernel**: In the notebook interface, click on the kernel picker and select "SageMath" from the available kernels.
+3. **Write SageMath Code**: Write SageMath code in notebook cells. The syntax highlighting will work automatically.
+4. **Execute Cells**: Run individual cells or all cells to execute SageMath code and see the output directly in the notebook.
+
 ### Viewing Output
 
 - **Integrated Terminal**: The output from your SageMath script, along with any errors or warnings, will be displayed in VS Code's integrated terminal. This allows for easy debugging and interaction with your code.
+- **Notebook Output**: For notebooks, output appears directly below each executed cell, similar to other Jupyter kernels.
 
 ## Requirements
 
@@ -95,6 +104,7 @@ This project is licensed under the AGPL-3.0 License - see the [LICENSE](LICENSE)
 
 ## TODO (Also Known As "Need Help")
 
+- [x] **Notebook Support**: Enable SageMath code execution and syntax highlighting in Jupyter notebooks.
 - [ ] **Code Completion**: Enhance code completion for SageMath-specific syntax.
 - [ ] **Interactive Plots**: Enable rendering of interactive SageMath plots within VS Code.
 - [ ] **Documentation Integration**: Provide direct access to SageMath documentation via hover tooltips.

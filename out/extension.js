@@ -38,7 +38,9 @@ exports.deactivate = deactivate;
 const vscode = __importStar(require("vscode"));
 const path = __importStar(require("path"));
 const fs = __importStar(require("fs")); // 引入文件系统模块
+const notebookController_1 = require("./notebookController");
 function activate(context) {
+    // Register the existing file execution command
     let disposable = vscode.commands.registerCommand('runsagemathfile.run', () => {
         const editor = vscode.window.activeTextEditor;
         if (!editor) {
@@ -85,6 +87,10 @@ function activate(context) {
         // 作为单一命令执行
         terminal.sendText(command);
     });
+    // Register the notebook controller for SageMath
+    const notebookController = new notebookController_1.SageMathNotebookController();
     context.subscriptions.push(disposable);
+    context.subscriptions.push(notebookController);
 }
 function deactivate() { }
+//# sourceMappingURL=extension.js.map

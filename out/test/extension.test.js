@@ -44,5 +44,16 @@ suite('Extension Test Suite', () => {
         assert.strictEqual(-1, [1, 2, 3].indexOf(5));
         assert.strictEqual(-1, [1, 2, 3].indexOf(0));
     });
+    test('Extension should be present', () => {
+        const extension = vscode.extensions.getExtension('Lov3.sagemath-enhanced');
+        assert.ok(extension);
+    });
+    test('Extension should activate', async () => {
+        const extension = vscode.extensions.getExtension('Lov3.sagemath-enhanced');
+        if (extension) {
+            await extension.activate();
+            assert.ok(extension.isActive);
+        }
+    });
 });
 //# sourceMappingURL=extension.test.js.map
