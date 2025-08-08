@@ -54,6 +54,11 @@
           "type": "string",
           "default": "sage",
           "description": "Path to the SageMath interpreter"
+        },
+        "sagemathEnhanced.commandArguments": {
+          "type": "string",
+          "default": "",
+          "description": "Additional command arguments for the SageMath interpreter (e.g., '-python' to fix pwntools compatibility issues)"
         }
       }
     },
@@ -69,6 +74,10 @@
         "command": "runsagemathfile.run",
         "title": "Run SageMath File",
         "icon": "$(play)"
+      },
+      {
+        "command": "runsagemathfile.troubleshoot",
+        "title": "SageMath: Troubleshoot Execution Issues"
       }
     ],
     "menus": {
@@ -77,6 +86,13 @@
           "when": "resourceLangId == sage",
           "command": "runsagemathfile.run",
           "group": "navigation"
+        }
+      ],
+      "editor/context": [
+        {
+          "when": "resourceLangId == sage",
+          "command": "runsagemathfile.troubleshoot",
+          "group": "9_sagemath"
         }
       ]
     }
