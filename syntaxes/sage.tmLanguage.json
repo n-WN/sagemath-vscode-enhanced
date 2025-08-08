@@ -2,10 +2,6 @@
     "fileTypes": [
         "sage"
     ],
-    "comments": {
-        "lineComment": "#",
-        "blockComment": ["'''", "'''"]
-    },
     "scopeName": "source.sage",
     "name": "Sage",
     "patterns": [
@@ -16,120 +12,115 @@
             "include": "source.python"
         }
     ],
-    "brackets": [
-        ["{", "}"],
-        ["[", "]"],
-        ["(", ")"]
-    ],
-    "autoClosingPairs": [
-        { "open": "{", "close": "}" },
-        { "open": "[", "close": "]" },
-        { "open": "(", "close": ")" },
-        { "open": "'", "close": "'", "notIn": ["string", "comment"] },
-        { "open": "\"", "close": "\"", "notIn": ["string", "comment"] }
-    ],
-    "surroundingPairs": [
-          ["'", "'"],
-          ["\"", "\""]
-    ],
     "repository": {
         "sageSpecific": {
             "patterns": [
                 {
-                    "match": "\\b(ZZ|RR|CC|QQ|Mod|mod|PolynomialRing|var|Zmod)\\b",
-                    "name": "support.class.sage"
+                    "comment": "SageMath number systems and rings",
+                    "match": "\\b(ZZ|RR|CC|QQ|QQbar|AA|RIF|RBF|CIF|CBF|GF|Zmod|Integers|Rationals|RealField|ComplexField|AlgebraicField|NumberField)\\b",
+                    "name": "support.type.sage"
                 },
                 {
-                    "match": "\\b(gens|factor|plot|matrix)\\b\\(",
-                    "name": "support.function.sage"
+                    "comment": "SageMath algebraic structures",
+                    "match": "\\b(PolynomialRing|LaurentPolynomialRing|FractionField|QuotientRing|MatrixSpace|VectorSpace|FreeModule|FiniteField|CyclotomicField|QuadraticField)\\b",
+                    "name": "support.type.sage"
                 },
                 {
-                    "begin": "var\\(",
+                    "comment": "SageMath built-in functions",
+                    "match": "\\b(var|SR|symbolic_expression|assume|forget|solve|find_root|minimize|maximize|diff|integrate|limit|series|taylor|plot|plot3d|parametric_plot|parametric_plot3d|implicit_plot|list_plot|bar_chart|pie_chart|matrix|vector|Matrix|Vector|diagonal_matrix|identity_matrix|zero_matrix|ones_matrix|random_matrix|block_matrix|jordan_form|eigenvalues|eigenvectors|charpoly|minpoly|rank|det|trace|norm|gcd|lcm|factor|expand|simplify|collect|substitute|N|numerical_approx|RealNumber|Integer|Rational|sqrt|exp|log|ln|sin|cos|tan|asin|acos|atan|sinh|cosh|tanh|asinh|acosh|atanh|floor|ceil|round|abs|sign|mod|divmod|binomial|factorial|gamma|beta|zeta|fibonacci|lucas|catalan_number|euler_number|bernoulli|stirling_number1|stirling_number2|bell_number|partition|Partitions|Permutations|Combinations|Subsets|cartesian_product|Set|Poset|Graph|DiGraph)\\b",
+                    "name": "support.function.builtin.sage"
+                },
+                {
+                    "comment": "SageMath special methods and operators",
+                    "match": "\\b(gens|gen|ngens|base_ring|characteristic|degree|coefficients|monomials|variables|parent|universe|cardinality|order|is_finite|is_prime|is_irreducible|is_zero|is_one|is_unit|inverse|conjugate|real|imag|abs|argument|numerator|denominator)\\b",
+                    "name": "support.function.magic.sage"
+                },
+                {
+                    "comment": "SageMath variable declarations",
+                    "begin": "\\b(var)\\s*\\(",
+                    "beginCaptures": {
+                        "1": {
+                            "name": "keyword.other.sage"
+                        }
+                    },
                     "end": "\\)",
-                    "name": "support.variable.sage",
+                    "name": "meta.function-call.sage",
                     "patterns": [
                         {
-                            "match": "[a-zA-Z_][a-zA-Z0-9_]*",
+                            "match": "'([^']+)'",
+                            "captures": {
+                                "1": {
+                                    "name": "variable.parameter.sage"
+                                }
+                            }
+                        },
+                        {
+                            "match": "\"([^\"]+)\"",
+                            "captures": {
+                                "1": {
+                                    "name": "variable.parameter.sage"
+                                }
+                            }
+                        },
+                        {
+                            "match": "\\b[a-zA-Z_][a-zA-Z0-9_]*\\b",
                             "name": "variable.parameter.sage"
+                        },
+                        {
+                            "include": "source.python"
                         }
                     ]
                 },
                 {
+                    "comment": "SageMath ring and field element notation",
+                    "match": "\\b([a-zA-Z_][a-zA-Z0-9_]*)(\\.)(<)([^>]+)(>)",
+                    "captures": {
+                        "1": {
+                            "name": "variable.other.sage"
+                        },
+                        "2": {
+                            "name": "punctuation.accessor.sage"
+                        },
+                        "3": {
+                            "name": "punctuation.definition.generic.begin.sage"
+                        },
+                        "4": {
+                            "name": "variable.parameter.sage"
+                        },
+                        "5": {
+                            "name": "punctuation.definition.generic.end.sage"
+                        }
+                    }
+                },
+                {
+                    "comment": "SageMath symbolic constants",
+                    "match": "\\b(pi|e|I|infinity|oo|golden_ratio|log2|catalan|euler_gamma)\\b",
+                    "name": "constant.language.sage"
+                },
+                {
+                    "comment": "SageMath boolean constants",
+                    "match": "\\b(True|False|None)\\b",
+                    "name": "constant.language.sage"
+                },
+                {
+                    "comment": "SageMath exponentiation operator",
+                    "match": "\\^",
+                    "name": "keyword.operator.arithmetic.sage"
+                },
+                {
+                    "comment": "SageMath logical XOR operator",
                     "match": "\\^\\^",
                     "name": "keyword.operator.logical.sage"
                 },
                 {
-                    "begin": "([a-zA-Z_][a-zA-Z0-9_]*)\\.<([a-zA-Z_][a-zA-Z0-9_, ]*)>",
-                    "beginCaptures": {
-                        "1": {
-                            "name": "variable.other.polynomial-ring.sage"
-                        },
-                        "2": {
-                            "name": "variable.parameter.polynomial.sage"
-                        }
-                    },
-                    "end": "=",
-                    "endCaptures": {
-                        "0": {
-                            "name": "keyword.operator.assignment.sage"
-                        }
-                    },
-                    "name": "meta.polynomial-ring-definition.sage",
-                    "patterns": [
-                        {
-                            "include": "#variables"
-                        }
-                    ]
+                    "comment": "SageMath range notation",
+                    "match": "\\.\\.",
+                    "name": "keyword.operator.range.sage"
                 },
                 {
-                    "match": "\\bTrue\\b|\\bFalse\\b",
-                    "name": "constant.language.boolean.sage"
-                }
-            ]
-        },
-        "variables": {
-            "patterns": [
-                {
-                    "match": "\\b[a-zA-Z_][a-zA-Z0-9_]*\\b",
-                    "name": "variable.other.sage"
-                }
-            ]
-        },
-        "comments": {
-            "patterns": [
-                {
-                    "name": "comment.line.number-sign.sage",
-                    "match": "#.*$"
-                },
-                {
-                    "begin": "'''",
-                    "beginCaptures": {
-                        "0": {
-                            "name": "punctuation.definition.comment.begin.sage"
-                        }
-                    },
-                    "end": "'''",
-                    "endCaptures": {
-                        "0": {
-                            "name": "punctuation.definition.comment.end.sage"
-                        }
-                    },
-                    "name": "comment.block.sage"
-                },
-                {
-                    "begin": "\"\"\"",
-                    "beginCaptures": {
-                        "0": {
-                            "name": "punctuation.definition.comment.begin.sage"
-                        }
-                    },
-                    "end": "\"\"\"",
-                    "endCaptures": {
-                        "0": {
-                            "name": "punctuation.definition.comment.end.sage"
-                        }
-                    },
-                    "name": "comment.block.sage"
+                    "comment": "SageMath lambda (anonymous function)",
+                    "match": "\\blambda\\b",
+                    "name": "keyword.control.sage"
                 }
             ]
         }
