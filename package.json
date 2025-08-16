@@ -3,7 +3,7 @@
   "publisher": "Lov3",
   "displayName": "SageMath Enhanced",
   "description": "An enhanced VS Code extension for SageMath, providing advanced features and integrations.",
-  "version": "1.3.3",
+  "version": "2.0.0",
   "engines": {
     "vscode": "^1.76.0"
   },
@@ -28,13 +28,13 @@
       {
         "id": "sage",
         "aliases": [
-          "Sage",
-          "sagemath"
+          "SageMath",
+          "Sage"
         ],
         "extensions": [
           ".sage"
         ],
-        "configuration": "syntaxes/sage.tmLanguage.json"
+        "configuration": "./language-configuration.json"
       }
     ],
     "configuration": {
@@ -54,6 +54,32 @@
           "type": "string",
           "default": "sage",
           "description": "Path to the SageMath interpreter"
+        },
+        "sagemathEnhanced.enableDiagnostics": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable diagnostic messages and error checking"
+        },
+        "sagemathEnhanced.enableCompletion": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable code completion and IntelliSense features"
+        },
+        "sagemathEnhanced.maxNumberOfProblems": {
+          "type": "number",
+          "default": 100,
+          "description": "Maximum number of problems shown in the diagnostics"
+        },
+        "sagemathEnhanced.enableHover": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable hover documentation and information"
+        },
+        "sagemathEnhanced.logLevel": {
+          "type": "string",
+          "enum": ["off", "error", "warn", "info", "debug"],
+          "default": "info",
+          "description": "Language server log level"
         }
       }
     },
@@ -61,7 +87,7 @@
       {
         "language": "sage",
         "scopeName": "source.sage",
-        "path": "syntaxes/sage.tmLanguage.json"
+        "path": "./syntaxes/sage.tmLanguage.json"
       }
     ],
     "commands": [
@@ -69,6 +95,11 @@
         "command": "runsagemathfile.run",
         "title": "Run SageMath File",
         "icon": "$(play)"
+      },
+      {
+        "command": "sagemathEnhanced.restartServer",
+        "title": "Restart SageMath Language Server",
+        "category": "SageMath"
       }
     ],
     "menus": {
@@ -78,8 +109,20 @@
           "command": "runsagemathfile.run",
           "group": "navigation"
         }
+      ],
+      "commandPalette": [
+        {
+          "command": "sagemathEnhanced.restartServer",
+          "when": "resourceLangId == sage"
+        }
       ]
-    }
+    },
+    "snippets": [
+      {
+        "language": "sage",
+        "path": "./snippets/sage.json"
+      }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
@@ -105,5 +148,10 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/n-WN/sagemath-vscode-enhanced.git"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^9.0.1",
+    "vscode-languageserver": "^9.0.1",
+    "vscode-languageserver-textdocument": "^1.0.12"
   }
 }
