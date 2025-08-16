@@ -212,21 +212,27 @@ function isPartialMatch(input, target) {
         return true; // Empty input matches everything
     const inputLower = input.toLowerCase();
     const targetLower = target.toLowerCase();
-    // Direct substring match
+    // Direct substring match (highest priority)
     if (targetLower.includes(inputLower)) {
         return true;
     }
     // Fuzzy match - check if all characters in input appear in order in target
-    let targetIndex = 0;
-    for (let i = 0; i < inputLower.length; i++) {
-        const char = inputLower[i];
-        const foundIndex = targetLower.indexOf(char, targetIndex);
-        if (foundIndex === -1) {
-            return false;
+    // But only if the input is reasonably short to avoid too many false positives
+    // Allow fuzzy matching only if input length is at most 60% of target length, minimum 3
+    const maxFuzzyLength = Math.max(3, Math.floor(targetLower.length * 0.6));
+    if (inputLower.length <= maxFuzzyLength) {
+        let targetIndex = 0;
+        for (let i = 0; i < inputLower.length; i++) {
+            const char = inputLower[i];
+            const foundIndex = targetLower.indexOf(char, targetIndex);
+            if (foundIndex === -1) {
+                return false;
+            }
+            targetIndex = foundIndex + 1;
         }
-        targetIndex = foundIndex + 1;
+        return true;
     }
-    return true;
+    return false;
 }
 // This handler provides the initial list of the completion items.
 connection.onCompletion((textDocumentPosition) => {
@@ -246,6 +252,8 @@ connection.onCompletion((textDocumentPosition) => {
                 data: index + 1,
                 detail: 'SageMath built-in',
                 documentation: `SageMath built-in function or class: ${builtin}`,
+                insertText: builtin,
+                filterText: builtin,
                 // Add sort text to prioritize exact matches
                 sortText: currentWord && builtin.toLowerCase().startsWith(currentWord.toLowerCase())
                     ? '0' + builtin
@@ -262,6 +270,8 @@ connection.onCompletion((textDocumentPosition) => {
                 data: SAGEMATH_BUILTINS.length + index + 1,
                 detail: 'SageMath method',
                 documentation: `Common SageMath method: ${method}`,
+                insertText: method,
+                filterText: method,
                 // Add sort text to prioritize exact matches
                 sortText: currentWord && method.toLowerCase().startsWith(currentWord.toLowerCase())
                     ? '0' + method
