@@ -16,9 +16,9 @@ jobs:
           fetch-depth: 0
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'npm'
 
       - name: Install Dependencies
@@ -27,49 +27,66 @@ jobs:
       - name: Compile TypeScript
         run: npm run compile
 
+      - name: Run Linter
+        run: npm run lint
+
       - name: Install latest version of @vscode/vsce
         run: npm install -g @vscode/vsce@latest
 
       - name: Package VSIX
         run: npx vsce package
 
-      - name: List Files
-        run: ls
-
-      - name: Get package version1
-        id: get_version1
+      - name: Get package version
+        id: get_version
         run: |
           VERSION=$(node -p "require('./package.json').version")
           echo "VERSION=$VERSION" >> $GITHUB_ENV
-          IFS='.' read -ra ADDR <<< "$VERSION"
-          echo "VERSION_MAJOR=${ADDR[0]}" >> $GITHUB_ENV
-          echo "VERSION_MINOR=${ADDR[1]}" >> $GITHUB_ENV
-          echo "VERSION_PATCH=${ADDR[2]}" >> $GITHUB_ENV
+          echo "TAG_NAME=v$VERSION" >> $GITHUB_ENV
 
-      - name: List Files
-        run: ls
+      - name: Check if tag exists
+        id: check_tag
+        run: |
+          if git rev-parse "v${{ env.VERSION }}" >/dev/null 2>&1; then
+            echo "TAG_EXISTS=true" >> $GITHUB_ENV
+          else
+            echo "TAG_EXISTS=false" >> $GITHUB_ENV
+          fi
 
-      # - name: GH Release Action
-      #   uses: zcubbs/gh-release-action@v1.0.6
-      #   with:
-      #     major: ${{ env.VERSION_MAJOR }}
-      #     minor: ${{ env.VERSION_MINOR }}
-      #     patch: ${{ env.VERSION_PATCH }}
-      #     github-token: ${{ secrets.GITHUB_TOKEN }}
-      #     files: sagemath-enhanced-${{ env.VERSION }}.vsix
-      - name: Get package version2
-        id: get_version2
-        run: echo "VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_ENV
+      - name: Create Tag
+        if: env.TAG_EXISTS == 'false'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -a "v${{ env.VERSION }}" -m "Release v${{ env.VERSION }}"
+          git push origin "v${{ env.VERSION }}"
 
-      - name: Build
-        run: echo "Build complete"
-
-      - name: Release
+      - name: Create Release
+        if: env.TAG_EXISTS == 'false'
         uses: softprops/action-gh-release@v2
         with:
-          files: sagemath-enhanced-${{ env.VERSION }}.vsix  # 指定要上传的文件
-          token: ${{ secrets.DEPLOY_KEY }}  # 使用 GitHub Token 来认证
-          draft: false  # 指定这不是一个草稿版本
-          prerelease: false  # 指定这不是一个预发布版本
-          generate_release_notes: true  # 自动生成发布说明
-          tag_name: ${{ github.ref_name }}  # 使用推送的标签名
+          files: sagemath-enhanced-${{ env.VERSION }}.vsix
+          token: ${{ secrets.GITHUB_TOKEN }}
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+          tag_name: v${{ env.VERSION }}
+          name: Release v${{ env.VERSION }}
+          body: |
+            ## Release v${{ env.VERSION }}
+            
+            This release was automatically generated from the main branch.
+            
+            ### Changes
+            See the auto-generated release notes below for details.
+            
+            ### Installation
+            Download the `sagemath-enhanced-${{ env.VERSION }}.vsix` file and install it in VS Code using:
+            ```
+            code --install-extension sagemath-enhanced-${{ env.VERSION }}.vsix
+            ```
+
+      - name: Skip Release (Tag Already Exists)
+        if: env.TAG_EXISTS == 'true'
+        run: |
+          echo "Tag v${{ env.VERSION }} already exists. Skipping release creation."
+          echo "If you want to create a new release, please update the version in package.json"
