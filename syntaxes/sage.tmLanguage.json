@@ -7,10 +7,37 @@
         "blockComment": ["'''", "'''"]
     },
     "scopeName": "source.sage",
-    "name": "Sage",
+    "name": "SageMath",
     "patterns": [
         {
             "include": "#sageSpecific"
+        },
+        {
+            "include": "#sageBuiltins"
+        },
+        {
+            "include": "#sageNumbers"
+        },
+        {
+            "include": "#sageOperators"
+        },
+        {
+            "include": "#sageRings"
+        },
+        {
+            "include": "#sagePlotting"
+        },
+        {
+            "include": "#sageLinearAlgebra"
+        },
+        {
+            "include": "#sageCalculus"
+        },
+        {
+            "include": "#sageNumberTheory"
+        },
+        {
+            "include": "#sageCombinatorics"
         },
         {
             "include": "source.python"
@@ -19,7 +46,8 @@
     "brackets": [
         ["{", "}"],
         ["[", "]"],
-        ["(", ")"]
+        ["(", ")"],
+        ["<", ">"]
     ],
     "autoClosingPairs": [
         { "open": "{", "close": "}" },
@@ -29,107 +57,301 @@
         { "open": "\"", "close": "\"", "notIn": ["string", "comment"] }
     ],
     "surroundingPairs": [
-          ["'", "'"],
-          ["\"", "\""]
+        ["'", "'"],
+        ["\"", "\""],
+        ["[", "]"],
+        ["(", ")"],
+        ["{", "}"],
+        ["<", ">"]
     ],
     "repository": {
         "sageSpecific": {
             "patterns": [
                 {
-                    "match": "\\b(ZZ|RR|CC|QQ|Mod|mod|PolynomialRing|var|Zmod)\\b",
-                    "name": "support.class.sage"
+                    "match": "\\b(var|SR|PolynomialRing|NumberField|FunctionField)\\b",
+                    "name": "support.class.sage.symbolic"
                 },
                 {
-                    "match": "\\b(gens|factor|plot|matrix)\\b\\(",
-                    "name": "support.function.sage"
+                    "match": "\\b(solve|factor|expand|simplify|collect|substitute|subs)\\b",
+                    "name": "support.function.sage.symbolic"
                 },
                 {
-                    "begin": "var\\(",
+                    "begin": "var\\s*\\(",
                     "end": "\\)",
-                    "name": "support.variable.sage",
+                    "name": "meta.function-call.sage.var",
+                    "beginCaptures": {
+                        "0": { "name": "support.function.sage.symbolic" }
+                    },
                     "patterns": [
                         {
                             "match": "[a-zA-Z_][a-zA-Z0-9_]*",
                             "name": "variable.parameter.sage"
+                        },
+                        {
+                            "match": "['\"]([a-zA-Z_][a-zA-Z0-9_\\s]*)['\"]",
+                            "name": "string.quoted.sage",
+                            "captures": {
+                                "1": { "name": "variable.parameter.sage" }
+                            }
                         }
                     ]
                 },
                 {
-                    "match": "\\^\\^",
+                    "match": "\\^\\^|\\*\\*",
+                    "name": "keyword.operator.arithmetic.sage"
+                },
+                {
+                    "match": "\\.\\.",
+                    "name": "keyword.operator.range.sage"
+                }
+            ]
+        },
+        "sageBuiltins": {
+            "patterns": [
+                {
+                    "match": "\\b(True|False|None|Infinity|infinity|oo|I|pi|e)\\b",
+                    "name": "constant.language.sage"
+                },
+                {
+                    "match": "\\b(abs|ceil|floor|round|sign|sqrt|exp|log|ln|sin|cos|tan|asin|acos|atan|sinh|cosh|tanh|asinh|acosh|atanh)\\b",
+                    "name": "support.function.builtin.sage"
+                },
+                {
+                    "match": "\\b(gcd|lcm|mod|Mod|is_prime|next_prime|previous_prime|prime_range|primes|factorial|binomial|catalan_number)\\b",
+                    "name": "support.function.sage.number-theory"
+                }
+            ]
+        },
+        "sageNumbers": {
+            "patterns": [
+                {
+                    "match": "\\b\\d+(\\.\\d*)?([eE][+-]?\\d+)?\\b",
+                    "name": "constant.numeric.sage"
+                },
+                {
+                    "match": "\\b0[xX][0-9a-fA-F]+\\b",
+                    "name": "constant.numeric.hex.sage"
+                },
+                {
+                    "match": "\\b0[oO][0-7]+\\b",
+                    "name": "constant.numeric.octal.sage"
+                },
+                {
+                    "match": "\\b0[bB][01]+\\b",
+                    "name": "constant.numeric.binary.sage"
+                }
+            ]
+        },
+        "sageOperators": {
+            "patterns": [
+                {
+                    "match": "\\+|\\-|\\*|\\/|\\/\\/|%|\\^|\\*\\*",
+                    "name": "keyword.operator.arithmetic.sage"
+                },
+                {
+                    "match": "==|!=|<|>|<=|>=",
+                    "name": "keyword.operator.comparison.sage"
+                },
+                {
+                    "match": "\\band\\b|\\bor\\b|\\bnot\\b",
                     "name": "keyword.operator.logical.sage"
                 },
                 {
-                    "begin": "([a-zA-Z_][a-zA-Z0-9_]*)\\.<([a-zA-Z_][a-zA-Z0-9_, ]*)>",
+                    "match": "=",
+                    "name": "keyword.operator.assignment.sage"
+                }
+            ]
+        },
+        "sageRings": {
+            "patterns": [
+                {
+                    "match": "\\b(ZZ|QQ|RR|CC|GF|Zmod|Integers|Rationals|RealField|ComplexField|AlgebraicField|QuadraticField)\\b",
+                    "name": "support.class.sage.ring"
+                },
+                {
+                    "begin": "([a-zA-Z_][a-zA-Z0-9_]*)\\s*=\\s*(PolynomialRing|LaurentPolynomialRing|PowerSeriesRing)\\s*\\(",
+                    "end": "\\)",
                     "beginCaptures": {
-                        "1": {
-                            "name": "variable.other.polynomial-ring.sage"
-                        },
-                        "2": {
-                            "name": "variable.parameter.polynomial.sage"
-                        }
+                        "1": { "name": "variable.other.sage.ring" },
+                        "2": { "name": "support.class.sage.ring" }
                     },
-                    "end": "=",
-                    "endCaptures": {
-                        "0": {
-                            "name": "keyword.operator.assignment.sage"
-                        }
-                    },
-                    "name": "meta.polynomial-ring-definition.sage",
                     "patterns": [
                         {
-                            "include": "#variables"
+                            "include": "#sageRings"
+                        },
+                        {
+                            "match": "['\"]([a-zA-Z_,\\s]+)['\"]",
+                            "name": "string.quoted.sage",
+                            "captures": {
+                                "1": { "name": "variable.parameter.sage" }
+                            }
                         }
                     ]
                 },
                 {
-                    "match": "\\bTrue\\b|\\bFalse\\b",
-                    "name": "constant.language.boolean.sage"
+                    "begin": "([a-zA-Z_][a-zA-Z0-9_]*)\\.\\s*<\\s*([a-zA-Z_][a-zA-Z0-9_,\\s]*)\\s*>",
+                    "end": "(?=\\s|$|;|\\)|\\]|\\})",
+                    "beginCaptures": {
+                        "1": { "name": "variable.other.sage.ring" },
+                        "2": { "name": "variable.parameter.sage.generator" }
+                    },
+                    "name": "meta.sage.ring-element"
                 }
             ]
         },
-        "variables": {
+        "sagePlotting": {
             "patterns": [
                 {
-                    "match": "\\b[a-zA-Z_][a-zA-Z0-9_]*\\b",
-                    "name": "variable.other.sage"
-                }
-            ]
-        },
-        "comments": {
-            "patterns": [
-                {
-                    "name": "comment.line.number-sign.sage",
-                    "match": "#.*$"
+                    "match": "\\b(plot|plot3d|parametric_plot|parametric_plot3d|implicit_plot|implicit_plot3d|contour_plot|density_plot|streamline_plot|vector_plot|list_plot|bar_chart|pie_chart|histogram)\\b",
+                    "name": "support.function.sage.plotting"
                 },
                 {
+                    "match": "\\b(show|save|Graphics|Graphics3d|line|point|circle|ellipse|polygon|text|arrow)\\b",
+                    "name": "support.function.sage.graphics"
+                }
+            ]
+        },
+        "sageLinearAlgebra": {
+            "patterns": [
+                {
+                    "match": "\\b(matrix|vector|Matrix|Vector|identity_matrix|zero_matrix|ones_matrix|random_matrix|diagonal_matrix|block_matrix|companion_matrix)\\b",
+                    "name": "support.class.sage.linalg"
+                },
+                {
+                    "match": "\\b(det|determinant|trace|rank|nullity|transpose|conjugate|adjugate|inverse|pseudoinverse|echelon_form|rref|smith_form|jordan_form)\\b",
+                    "name": "support.function.sage.linalg"
+                },
+                {
+                    "match": "\\b(eigenvalues|eigenvectors|eigenspaces|characteristic_polynomial|minimal_polynomial|norm|condition_number|singular_values)\\b",
+                    "name": "support.function.sage.linalg"
+                }
+            ]
+        },
+        "sageCalculus": {
+            "patterns": [
+                {
+                    "match": "\\b(diff|derivative|integrate|sum|limit|taylor|series|laplace|inverse_laplace|fourier|maxima|mathematica)\\b",
+                    "name": "support.function.sage.calculus"
+                },
+                {
+                    "match": "\\b(assume|assumptions|forget|solve_ineq|find_root|minimize|maximize)\\b",
+                    "name": "support.function.sage.solve"
+                }
+            ]
+        },
+        "sageNumberTheory": {
+            "patterns": [
+                {
+                    "match": "\\b(divisors|sigma|euler_phi|moebius|legendre_symbol|jacobi_symbol|kronecker_symbol|quadratic_residues)\\b",
+                    "name": "support.function.sage.number-theory"
+                },
+                {
+                    "match": "\\b(continued_fraction|convergents|padic|Padic|pAdicField|pAdicRing)\\b",
+                    "name": "support.class.sage.number-theory"
+                }
+            ]
+        },
+        "sageCombinatorics": {
+            "patterns": [
+                {
+                    "match": "\\b(Permutations|Combinations|Partitions|Compositions|Subsets|IntegerVectors|WeightedIntegerVectors)\\b",
+                    "name": "support.class.sage.combinatorics"
+                },
+                {
+                    "match": "\\b(catalan_number|fibonacci|lucas|stirling_number1|stirling_number2|bell_number|bernoulli|euler_number)\\b",
+                    "name": "support.function.sage.combinatorics"
+                }
+            ]
+        },
+        "sageGraphs": {
+            "patterns": [
+                {
+                    "match": "\\b(Graph|DiGraph|graphs|digraphs|Poset|posets)\\b",
+                    "name": "support.class.sage.graph"
+                },
+                {
+                    "match": "\\b(add_vertex|add_edge|vertices|edges|neighbors|degree|is_connected|shortest_path|diameter|girth|clique_number|chromatic_number)\\b",
+                    "name": "support.function.sage.graph"
+                }
+            ]
+        },
+        "sageGeometry": {
+            "patterns": [
+                {
+                    "match": "\\b(Point|Line|Ray|Segment|Circle|Ellipse|Polygon|Polyhedron|Polytope|ConvexHull)\\b",
+                    "name": "support.class.sage.geometry"
+                },
+                {
+                    "match": "\\b(distance|angle|area|volume|convex_hull|vertices|facets|dual)\\b",
+                    "name": "support.function.sage.geometry"
+                }
+            ]
+        },
+        "sageCrypto": {
+            "patterns": [
+                {
+                    "match": "\\b(random_prime|primitive_root|discrete_log|power_mod|inverse_mod|crt|chinese_remainder_theorem)\\b",
+                    "name": "support.function.sage.crypto"
+                },
+                {
+                    "match": "\\b(RSA|ElGamal|DiffieHellman|EllipticCurve|elliptic_curves)\\b",
+                    "name": "support.class.sage.crypto"
+                }
+            ]
+        },
+        "sageStrings": {
+            "patterns": [
+                {
                     "begin": "'''",
-                    "beginCaptures": {
-                        "0": {
-                            "name": "punctuation.definition.comment.begin.sage"
-                        }
-                    },
                     "end": "'''",
-                    "endCaptures": {
-                        "0": {
-                            "name": "punctuation.definition.comment.end.sage"
+                    "name": "string.quoted.triple.sage",
+                    "patterns": [
+                        {
+                            "match": "\\\\.",
+                            "name": "constant.character.escape.sage"
                         }
-                    },
-                    "name": "comment.block.sage"
+                    ]
                 },
                 {
                     "begin": "\"\"\"",
-                    "beginCaptures": {
-                        "0": {
-                            "name": "punctuation.definition.comment.begin.sage"
-                        }
-                    },
                     "end": "\"\"\"",
-                    "endCaptures": {
-                        "0": {
-                            "name": "punctuation.definition.comment.end.sage"
+                    "name": "string.quoted.triple.sage",
+                    "patterns": [
+                        {
+                            "match": "\\\\.",
+                            "name": "constant.character.escape.sage"
                         }
-                    },
-                    "name": "comment.block.sage"
+                    ]
+                },
+                {
+                    "begin": "'",
+                    "end": "'",
+                    "name": "string.quoted.single.sage",
+                    "patterns": [
+                        {
+                            "match": "\\\\.",
+                            "name": "constant.character.escape.sage"
+                        }
+                    ]
+                },
+                {
+                    "begin": "\"",
+                    "end": "\"",
+                    "name": "string.quoted.double.sage",
+                    "patterns": [
+                        {
+                            "match": "\\\\.",
+                            "name": "constant.character.escape.sage"
+                        }
+                    ]
+                }
+            ]
+        },
+        "sageComments": {
+            "patterns": [
+                {
+                    "match": "#.*$",
+                    "name": "comment.line.number-sign.sage"
                 }
             ]
         }

@@ -1,0 +1,218 @@
+{
+    "Variable Declaration": {
+        "prefix": "var",
+        "body": [
+            "var('${1:x}')"
+        ],
+        "description": "Create symbolic variable"
+    },
+    "Multiple Variables": {
+        "prefix": "vars",
+        "body": [
+            "var('${1:x y z}')"
+        ],
+        "description": "Create multiple symbolic variables"
+    },
+    "Polynomial Ring": {
+        "prefix": "polyring",
+        "body": [
+            "${1:R} = PolynomialRing(${2:QQ}, '${3:x}')",
+            "${3:x} = ${1:R}.gen()"
+        ],
+        "description": "Create polynomial ring"
+    },
+    "Matrix": {
+        "prefix": "matrix",
+        "body": [
+            "matrix(${1:QQ}, [",
+            "    [${2:1, 0}],",
+            "    [${3:0, 1}]",
+            "])"
+        ],
+        "description": "Create matrix"
+    },
+    "Identity Matrix": {
+        "prefix": "identity",
+        "body": [
+            "identity_matrix(${1:QQ}, ${2:3})"
+        ],
+        "description": "Create identity matrix"
+    },
+    "Plot Function": {
+        "prefix": "plot",
+        "body": [
+            "plot(${1:sin(x)}, (${2:x}, ${3:0}, ${4:2*pi}))"
+        ],
+        "description": "Plot a function"
+    },
+    "3D Plot": {
+        "prefix": "plot3d",
+        "body": [
+            "plot3d(${1:x^2 + y^2}, (${2:x}, ${3:-2}, ${4:2}), (${5:y}, ${6:-2}, ${7:2}))"
+        ],
+        "description": "Create 3D plot"
+    },
+    "Solve Equation": {
+        "prefix": "solve",
+        "body": [
+            "solve(${1:x^2 - 4 == 0}, ${2:x})"
+        ],
+        "description": "Solve equation"
+    },
+    "Factor": {
+        "prefix": "factor",
+        "body": [
+            "factor(${1:x^2 - 4})"
+        ],
+        "description": "Factor expression"
+    },
+    "Expand": {
+        "prefix": "expand",
+        "body": [
+            "expand(${1:(x+1)^2})"
+        ],
+        "description": "Expand expression"
+    },
+    "Simplify": {
+        "prefix": "simplify",
+        "body": [
+            "simplify(${1:sin(x)^2 + cos(x)^2})"
+        ],
+        "description": "Simplify expression"
+    },
+    "Derivative": {
+        "prefix": "diff",
+        "body": [
+            "diff(${1:sin(x)}, ${2:x})"
+        ],
+        "description": "Take derivative"
+    },
+    "Integral": {
+        "prefix": "integrate",
+        "body": [
+            "integrate(${1:sin(x)}, ${2:x})"
+        ],
+        "description": "Compute integral"
+    },
+    "Definite Integral": {
+        "prefix": "defint",
+        "body": [
+            "integrate(${1:sin(x)}, (${2:x}, ${3:0}, ${4:pi}))"
+        ],
+        "description": "Compute definite integral"
+    },
+    "Limit": {
+        "prefix": "limit",
+        "body": [
+            "limit(${1:sin(x)/x}, ${2:x}=${3:0})"
+        ],
+        "description": "Compute limit"
+    },
+    "Taylor Series": {
+        "prefix": "taylor",
+        "body": [
+            "taylor(${1:sin(x)}, ${2:x}, ${3:0}, ${4:5})"
+        ],
+        "description": "Taylor series expansion"
+    },
+    "Finite Field": {
+        "prefix": "gf",
+        "body": [
+            "GF(${1:7})"
+        ],
+        "description": "Create finite field"
+    },
+    "Modular Ring": {
+        "prefix": "zmod",
+        "body": [
+            "Zmod(${1:12})"
+        ],
+        "description": "Create modular ring"
+    },
+    "Random Matrix": {
+        "prefix": "randmat",
+        "body": [
+            "random_matrix(${1:QQ}, ${2:3}, ${3:3})"
+        ],
+        "description": "Create random matrix"
+    },
+    "Graph": {
+        "prefix": "graph",
+        "body": [
+            "${1:G} = Graph()",
+            "${1:G}.add_vertices([${2:1, 2, 3, 4}])",
+            "${1:G}.add_edges([(${3:1, 2}), (${4:2, 3}), (${5:3, 4})])"
+        ],
+        "description": "Create graph"
+    },
+    "Elliptic Curve": {
+        "prefix": "elliptic",
+        "body": [
+            "EllipticCurve([${1:0, 0, 0, -1, 0}])"
+        ],
+        "description": "Create elliptic curve"
+    },
+    "Prime Test": {
+        "prefix": "isprime",
+        "body": [
+            "is_prime(${1:17})"
+        ],
+        "description": "Test if number is prime"
+    },
+    "Next Prime": {
+        "prefix": "nextprime",
+        "body": [
+            "next_prime(${1:100})"
+        ],
+        "description": "Find next prime"
+    },
+    "GCD": {
+        "prefix": "gcd",
+        "body": [
+            "gcd(${1:12}, ${2:18})"
+        ],
+        "description": "Greatest common divisor"
+    },
+    "LCM": {
+        "prefix": "lcm",
+        "body": [
+            "lcm(${1:12}, ${2:18})"
+        ],
+        "description": "Least common multiple"
+    },
+    "Binomial Coefficient": {
+        "prefix": "binomial",
+        "body": [
+            "binomial(${1:10}, ${2:3})"
+        ],
+        "description": "Binomial coefficient"
+    },
+    "Permutations": {
+        "prefix": "perms",
+        "body": [
+            "Permutations(${1:4})"
+        ],
+        "description": "Generate permutations"
+    },
+    "Combinations": {
+        "prefix": "combs",
+        "body": [
+            "Combinations(${1:4}, ${2:2})"
+        ],
+        "description": "Generate combinations"
+    },
+    "Mod Operation": {
+        "prefix": "mod",
+        "body": [
+            "Mod(${1:17}, ${2:5})"
+        ],
+        "description": "Modular arithmetic"
+    },
+    "Power Mod": {
+        "prefix": "powmod",
+        "body": [
+            "power_mod(${1:2}, ${2:10}, ${3:7})"
+        ],
+        "description": "Modular exponentiation"
+    }
+}
