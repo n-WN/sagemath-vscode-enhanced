@@ -9,6 +9,8 @@ node_modules/
 
 # 构建产物
 **/*.map
+out/
+*.vsix
 
 # 系统文件
 .DS_Store
