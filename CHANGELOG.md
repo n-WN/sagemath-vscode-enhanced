@@ -8,10 +8,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ### Added - Major Rewrite with LSP Implementation
 
-- **🚀 Language Server Protocol (LSP) Support**: Complete rewrite with full LSP implementation
-- **💡 Intelligent Code Completion**: Context-aware autocompletion for SageMath functions, classes, and methods
-- **📖 Hover Documentation**: Instant documentation and type information on hover
-- **🔍 Enhanced Syntax Highlighting**: Comprehensive syntax highlighting for SageMath-specific constructs:
+- **Language Server Protocol (LSP) Support**: Complete rewrite with full LSP implementation
+- **Intelligent Code Completion**: Context-aware autocompletion for SageMath functions, classes, and methods
+- **Hover Documentation**: Instant documentation and type information on hover
+- **Enhanced Syntax Highlighting**: Comprehensive syntax highlighting for SageMath-specific constructs:
   - Ring and field declarations (ZZ, QQ, RR, CC, GF, etc.)
   - Polynomial rings and generators
   - Mathematical functions and operators
@@ -20,11 +20,11 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
   - Number theory and combinatorics functions
   - Cryptographic functions
   - Graph theory constructs
-- **⚡ Code Snippets**: 30+ pre-built code snippets for common SageMath patterns
-- **🔧 Enhanced Language Configuration**: Improved indentation, bracket matching, and auto-closing pairs
-- **📊 Real-time Diagnostics**: Syntax validation and error detection
-- **🔄 Server Management**: Restart language server command for troubleshooting
-- **⚙️ Extended Configuration**: New settings for controlling LSP features
+- **Code Snippets**: 30+ pre-built code snippets for common SageMath patterns
+- **Enhanced Language Configuration**: Improved indentation, bracket matching, and auto-closing pairs
+- **Real-time Diagnostics**: Syntax validation and error detection
+- **Server Management**: Restart language server command for troubleshooting
+- **Extended Configuration**: New settings for controlling LSP features
 
 ### Changed
 

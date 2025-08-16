@@ -29,10 +29,10 @@ Enhance your SageMath coding experience in Visual Studio Code with the SageMath 
 
 ## Features
 
-- **🚀 Language Server Protocol (LSP) Support**: Complete LSP implementation providing advanced language features
-- **💡 Intelligent Code Completion**: Context-aware autocompletion for SageMath functions, classes, and methods
-- **📖 Hover Documentation**: Instant documentation and type information on hover
-- **🔍 Syntax Highlighting**: Comprehensive syntax highlighting for SageMath-specific constructs including:
+- **Language Server Protocol (LSP) Support**: Complete LSP implementation providing advanced language features
+- **Intelligent Code Completion**: Context-aware autocompletion for SageMath functions, classes, and methods
+- **Hover Documentation**: Instant documentation and type information on hover
+- **Syntax Highlighting**: Comprehensive syntax highlighting for SageMath-specific constructs including:
   - Ring and field declarations (ZZ, QQ, RR, CC, GF, etc.)
   - Polynomial rings and generators
   - Mathematical functions and operators
@@ -41,15 +41,15 @@ Enhance your SageMath coding experience in Visual Studio Code with the SageMath 
   - Number theory and combinatorics functions
   - Cryptographic functions
   - Graph theory constructs
-- **⚡ Code Snippets**: Pre-built code snippets for common SageMath patterns
-- **🔧 Enhanced Language Configuration**: Improved indentation, bracket matching, and auto-closing pairs
-- **▶️ Script Execution**: Run SageMath files directly from the editor
-- **🧹 Automatic Cleanup**: Optional removal of generated `.sage.py` files
-- **🐧 WSL Support**: Enhanced Windows Subsystem for Linux compatibility
-- **📊 Diagnostics**: Real-time error detection and syntax validation
-- **🔄 Server Management**: Restart language server command for troubleshooting
+- **Code Snippets**: Pre-built code snippets for common SageMath patterns
+- **Enhanced Language Configuration**: Improved indentation, bracket matching, and auto-closing pairs
+- **Script Execution**: Run SageMath files directly from the editor
+- **Automatic Cleanup**: Optional removal of generated `.sage.py` files
+- **WSL Support**: Enhanced Windows Subsystem for Linux compatibility
+- **Diagnostics**: Real-time error detection and syntax validation
+- **Server Management**: Restart language server command for troubleshooting
 
-![Run SageMath File Button](images/start.png) *👆🏻 the Run SageMath File button, 👇🏻 Demo video*
+![Run SageMath File Button](images/start.png) *The Run SageMath File button (shown above), demo video below*
 
 https://github.com/n-WN/sagemath-vscode-enhanced/assets/30841158/2a8d5cea-8c21-4886-8e18-b48893691fe4
 
@@ -85,7 +85,7 @@ The extension now includes a full Language Server Protocol implementation provid
 ### Opening and Running SageMath Files
 
 1. **Opening a Sage File**: Open your `.sage` file in VS Code, or create a new one by selecting `File > New File` and saving it with the `.sage` extension.
-2. **Running the Code**: Once a `.sage` file is open in the editor, you'll notice a **Run SageMath File** button (▶️ icon) in the editor's title bar. Clicking this button will execute the SageMath code in the currently active `.sage` file.
+2. **Running the Code**: Once a `.sage` file is open in the editor, you'll notice a **Run SageMath File** button (play icon) in the editor's title bar. Clicking this button will execute the SageMath code in the currently active `.sage` file.
 3. **Automatic Cleanup**: If enabled in the extension settings, the temporary `.sage.py` file generated during execution will be automatically deleted after the script finishes running.
 4. **WSL Support**: If you're on Windows and have WSL installed, the extension can run SageMath scripts inside WSL for enhanced compatibility.
 
@@ -155,11 +155,11 @@ This project is licensed under the AGPL-3.0 License - see the [LICENSE](LICENSE)
 
 ## TODO (Also Known As "Need Help")
 
-- [x] **Code Completion**: ✅ Enhanced code completion for SageMath-specific syntax implemented via LSP.
-- [x] **Syntax Highlighting**: ✅ Comprehensive syntax highlighting for SageMath operations and functions.
-- [x] **Error Highlighting**: ✅ Real-time diagnostic feedback on syntax errors and computational exceptions.
-- [x] **Language Server Protocol**: ✅ Full LSP implementation with hover, completion, and diagnostics.
-- [x] **Code Snippets**: ✅ Pre-built snippets for common SageMath patterns.
+- [x] **Code Completion**: Enhanced code completion for SageMath-specific syntax implemented via LSP.
+- [x] **Syntax Highlighting**: Comprehensive syntax highlighting for SageMath operations and functions.
+- [x] **Error Highlighting**: Real-time diagnostic feedback on syntax errors and computational exceptions.
+- [x] **Language Server Protocol**: Full LSP implementation with hover, completion, and diagnostics.
+- [x] **Code Snippets**: Pre-built snippets for common SageMath patterns.
 - [ ] **Interactive Plots**: Enable rendering of interactive SageMath plots within VS Code.
 - [ ] **Documentation Integration**: Enhanced hover tooltips with comprehensive SageMath documentation.
 - [ ] **Performance Optimization**: Further improve startup time and responsiveness of the extension.
