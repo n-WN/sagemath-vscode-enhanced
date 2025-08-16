@@ -13,28 +13,41 @@ let hasDiagnosticRelatedInformationCapability = false;
 const SAGEMATH_BUILTINS = [
     // Rings and Fields
     'ZZ', 'QQ', 'RR', 'CC', 'GF', 'Zmod', 'PolynomialRing', 'NumberField',
+    'LaurentPolynomialRing', 'PowerSeriesRing', 'FractionField', 'QuotientRing',
     // Basic functions
     'var', 'vars', 'SR', 'solve', 'factor', 'expand', 'simplify', 'diff', 'integrate',
+    // Polynomial operations
+    'Polynomial', 'poly', 'polynomial', 'polygen', 'PolynomialQuotientRing',
     // Linear algebra
     'matrix', 'vector', 'identity_matrix', 'zero_matrix', 'ones_matrix',
+    'random_matrix', 'diagonal_matrix', 'block_matrix',
     // Plotting
     'plot', 'plot3d', 'parametric_plot', 'parametric_plot3d', 'implicit_plot',
+    'list_plot', 'scatter_plot', 'contour_plot',
     // Number theory
     'gcd', 'lcm', 'is_prime', 'next_prime', 'prime_range', 'factorial',
+    'euler_phi', 'divisors', 'prime_divisors', 'factor_trial_division',
     // Combinatorics
     'Permutations', 'Combinations', 'Partitions', 'binomial',
+    'catalan_number', 'fibonacci', 'lucas_number', 'stirling_number1', 'stirling_number2',
     // Graph theory
     'Graph', 'DiGraph', 'graphs',
     // Geometry
-    'Point', 'Line', 'Circle', 'Polygon',
+    'Point', 'Line', 'Circle', 'Polygon', 'Polyhedron',
     // Calculus
     'limit', 'taylor', 'series', 'laplace', 'inverse_laplace',
+    'derivative', 'integral', 'sum', 'product',
+    // Cryptography
+    'RSA', 'ElGamal', 'DiffieHellman', 'AES', 'DES',
+    // Elliptic curves
+    'EllipticCurve', 'EllipticCurve_from_j',
     // Probability
-    'random', 'randint', 'choice',
+    'random', 'randint', 'choice', 'shuffle',
     // Special functions
     'sin', 'cos', 'tan', 'exp', 'log', 'sqrt', 'abs', 'floor', 'ceil',
+    'gamma', 'beta', 'zeta', 'bessel_J', 'bessel_Y',
     // Constants
-    'pi', 'e', 'I', 'infinity', 'oo'
+    'pi', 'e', 'I', 'infinity', 'oo', 'NaN', 'golden_ratio'
 ];
 // SageMath methods that are commonly used
 const SAGEMATH_METHODS = [
@@ -183,28 +196,78 @@ connection.onDidChangeWatchedFiles(_change => {
     // Monitored files have change in VS Code
     connection.console.log('We received a file change event');
 });
-// This handler provides the initial list of the completion items.
-connection.onCompletion((_textDocumentPosition) => {
-    const items = [];
-    // Add SageMath built-ins
-    SAGEMATH_BUILTINS.forEach((builtin, index) => {
-        items.push({
-            label: builtin,
-            kind: node_1.CompletionItemKind.Function,
-            data: index + 1,
-            detail: 'SageMath built-in',
-            documentation: `SageMath built-in function or class: ${builtin}`
-        });
+// Helper function to get the word being typed at the cursor position
+function getWordAtPosition(document, position) {
+    const line = document.getText({
+        start: { line: position.line, character: 0 },
+        end: { line: position.line, character: position.character }
     });
-    // Add common methods
+    // Match word characters at the end of the line up to cursor position
+    const match = line.match(/[a-zA-Z_][a-zA-Z0-9_]*$/);
+    return match ? match[0] : '';
+}
+// Helper function to check if a string matches a partial input (fuzzy matching)
+function isPartialMatch(input, target) {
+    if (!input)
+        return true; // Empty input matches everything
+    const inputLower = input.toLowerCase();
+    const targetLower = target.toLowerCase();
+    // Direct substring match
+    if (targetLower.includes(inputLower)) {
+        return true;
+    }
+    // Fuzzy match - check if all characters in input appear in order in target
+    let targetIndex = 0;
+    for (let i = 0; i < inputLower.length; i++) {
+        const char = inputLower[i];
+        const foundIndex = targetLower.indexOf(char, targetIndex);
+        if (foundIndex === -1) {
+            return false;
+        }
+        targetIndex = foundIndex + 1;
+    }
+    return true;
+}
+// This handler provides the initial list of the completion items.
+connection.onCompletion((textDocumentPosition) => {
+    const document = documents.get(textDocumentPosition.textDocument.uri);
+    if (!document) {
+        return [];
+    }
+    // Get the current word being typed
+    const currentWord = getWordAtPosition(document, textDocumentPosition.position);
+    const items = [];
+    // Add filtered SageMath built-ins
+    SAGEMATH_BUILTINS.forEach((builtin, index) => {
+        if (isPartialMatch(currentWord, builtin)) {
+            items.push({
+                label: builtin,
+                kind: node_1.CompletionItemKind.Function,
+                data: index + 1,
+                detail: 'SageMath built-in',
+                documentation: `SageMath built-in function or class: ${builtin}`,
+                // Add sort text to prioritize exact matches
+                sortText: currentWord && builtin.toLowerCase().startsWith(currentWord.toLowerCase())
+                    ? '0' + builtin
+                    : '1' + builtin
+            });
+        }
+    });
+    // Add filtered common methods
     SAGEMATH_METHODS.forEach((method, index) => {
-        items.push({
-            label: method,
-            kind: node_1.CompletionItemKind.Method,
-            data: SAGEMATH_BUILTINS.length + index + 1,
-            detail: 'SageMath method',
-            documentation: `Common SageMath method: ${method}`
-        });
+        if (isPartialMatch(currentWord, method)) {
+            items.push({
+                label: method,
+                kind: node_1.CompletionItemKind.Method,
+                data: SAGEMATH_BUILTINS.length + index + 1,
+                detail: 'SageMath method',
+                documentation: `Common SageMath method: ${method}`,
+                // Add sort text to prioritize exact matches
+                sortText: currentWord && method.toLowerCase().startsWith(currentWord.toLowerCase())
+                    ? '0' + method
+                    : '1' + method
+            });
+        }
     });
     return items;
 });
@@ -217,13 +280,25 @@ connection.onCompletionResolve((item) => {
         'QQ': 'The field of rational numbers. Example: QQ(1/2) creates the rational number 1/2.',
         'RR': 'The field of real numbers with arbitrary precision. Example: RR(pi)',
         'CC': 'The field of complex numbers. Example: CC(1, 2) creates 1 + 2*I',
+        'PolynomialRing': 'Creates a polynomial ring. Example: R = PolynomialRing(QQ, "x"); x = R.gen()',
+        'LaurentPolynomialRing': 'Creates a Laurent polynomial ring. Example: R = LaurentPolynomialRing(QQ, "x")',
+        'PowerSeriesRing': 'Creates a power series ring. Example: R = PowerSeriesRing(QQ, "x")',
+        'NumberField': 'Creates a number field. Example: K = NumberField(x^2 - 2, "a")',
+        'GF': 'Creates a finite field (Galois field). Example: F = GF(7) or F = GF(2^8)',
+        'EllipticCurve': 'Creates an elliptic curve. Example: E = EllipticCurve([0, 0, 0, -1, 0])',
         'var': 'Creates symbolic variables. Example: var("x y z") creates symbolic variables x, y, z',
         'matrix': 'Creates a matrix. Example: matrix([[1,2],[3,4]]) creates a 2x2 matrix',
         'plot': 'Plots functions. Example: plot(sin(x), (x, 0, 2*pi))',
         'solve': 'Solves equations. Example: solve(x^2 - 4 == 0, x)',
         'factor': 'Factors polynomials or integers. Example: factor(x^2 - 4)',
         'integrate': 'Computes integrals. Example: integrate(sin(x), x)',
-        'diff': 'Computes derivatives. Example: diff(sin(x), x)'
+        'diff': 'Computes derivatives. Example: diff(sin(x), x)',
+        'expand': 'Expands expressions. Example: expand((x+1)^3)',
+        'simplify': 'Simplifies expressions. Example: simplify(sin(x)^2 + cos(x)^2)',
+        'Graph': 'Creates a graph. Example: G = Graph(); G.add_edges([(1,2), (2,3)])',
+        'gcd': 'Greatest common divisor. Example: gcd(12, 18)',
+        'is_prime': 'Tests primality. Example: is_prime(17)',
+        'factorial': 'Computes factorial. Example: factorial(5)'
     };
     if (detailedDocs[item.label]) {
         item.documentation = {
