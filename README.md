@@ -145,6 +145,10 @@ We welcome contributions to the SageMath Enhanced extension. Here's how you can 
 4. Push to the branch (`git push origin feature/YourFeature`).
 5. Create a new Pull Request on GitHub against the `sagemath-vscode-enhanced` repository.
 
+### Releases
+
+This repository uses automatic releases. When changes are merged to the `main` branch, a new release is automatically created based on the version in `package.json`. See [Release Process Documentation](docs/RELEASE_PROCESS.md) for details.
+
 ## Support and Feedback
 
 If you encounter any issues or have suggestions for improvements, please file an issue on the [GitHub repository](https://github.com/n-WN/sagemath-vscode-enhanced/issues).
