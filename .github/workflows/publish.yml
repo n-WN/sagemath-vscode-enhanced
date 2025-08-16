@@ -88,6 +88,21 @@ jobs:
             code --install-extension sagemath-enhanced-${{ env.VERSION }}.vsix
             ```
 
+      - name: Publish to VS Code Marketplace
+        if: env.TAG_EXISTS == 'false'
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
+        run: |
+          if [ -z "$VSCE_PAT" ]; then
+            echo "Warning: VSCE_PAT secret not found. Skipping marketplace publishing."
+            echo "To enable marketplace publishing, add VSCE_PAT secret to repository settings."
+            echo "See docs/RELEASE_PROCESS.md for setup instructions."
+          else
+            echo "Publishing extension to VS Code marketplace..."
+            npx vsce publish --pat $VSCE_PAT --skip-duplicate
+            echo "Extension published successfully to VS Code marketplace!"
+          fi
+
       - name: Skip Release (Tag Already Exists)
         if: env.TAG_EXISTS == 'true'
         run: |
