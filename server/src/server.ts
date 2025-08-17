@@ -272,7 +272,9 @@ function getWordAtPosition(document: TextDocument, position: { line: number; cha
 
 // Helper function to check if a string matches a partial input (fuzzy matching)
 function isPartialMatch(input: string, target: string): boolean {
-	if (!input) return true; // Empty input matches everything
+	if (!input) {
+		return true; // Empty input matches everything
+	}
 	
 	const inputLower = input.toLowerCase();
 	const targetLower = target.toLowerCase();
