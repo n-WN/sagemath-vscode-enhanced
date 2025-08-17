@@ -12,10 +12,7 @@ import {
 let client: LanguageClient;
 
 export function activate(context: vscode.ExtensionContext) {
-    // Start the Language Server
-    startLanguageServer(context);
-
-    // Register the run command
+    // Register the run command first to ensure it's available even if language server fails
     let runDisposable = vscode.commands.registerCommand('runsagemathfile.run', () => {
         const editor = vscode.window.activeTextEditor;
         if (!editor) {
@@ -72,52 +69,73 @@ export function activate(context: vscode.ExtensionContext) {
 
     // Register the restart server command
     let restartDisposable = vscode.commands.registerCommand('sagemathEnhanced.restartServer', async () => {
-        if (client) {
-            await client.stop();
-            startLanguageServer(context);
+        try {
+            if (client) {
+                await client.stop();
+            }
+            await startLanguageServer(context);
             vscode.window.showInformationMessage('SageMath Language Server restarted');
+        } catch (error) {
+            console.error('Failed to restart SageMath Language Server:', error);
+            vscode.window.showErrorMessage('Failed to restart SageMath Language Server. Check the output console for details.');
         }
     });
 
     context.subscriptions.push(runDisposable, restartDisposable);
+
+    // Start the Language Server asynchronously to avoid blocking command registration
+    startLanguageServer(context).catch(error => {
+        console.error('Failed to start SageMath Language Server:', error);
+        vscode.window.showWarningMessage('SageMath Language Server failed to start. Some features may not be available.');
+    });
 }
 
-function startLanguageServer(context: vscode.ExtensionContext) {
-    // The server is implemented in the server directory
-    const serverModule = context.asAbsolutePath(
-        path.join('out', 'server', 'src', 'server.js')
-    );
+async function startLanguageServer(context: vscode.ExtensionContext): Promise<void> {
+    try {
+        // The server is implemented in the server directory
+        const serverModule = context.asAbsolutePath(
+            path.join('out', 'server', 'src', 'server.js')
+        );
 
-    // If the extension is launched in debug mode then the debug server options are used
-    // Otherwise the run options are used
-    const serverOptions: ServerOptions = {
-        run: { module: serverModule, transport: TransportKind.ipc },
-        debug: {
-            module: serverModule,
-            transport: TransportKind.ipc,
+        // Check if server module exists
+        if (!fs.existsSync(serverModule)) {
+            throw new Error(`Language server module not found at: ${serverModule}`);
         }
-    };
 
-    // Options to control the language client
-    const clientOptions: LanguageClientOptions = {
-        // Register the server for SageMath documents
-        documentSelector: [{ scheme: 'file', language: 'sage' }],
-        synchronize: {
-            // Notify the server about file changes to '.sage' files contained in the workspace
-            fileEvents: vscode.workspace.createFileSystemWatcher('**/*.sage')
-        }
-    };
+        // If the extension is launched in debug mode then the debug server options are used
+        // Otherwise the run options are used
+        const serverOptions: ServerOptions = {
+            run: { module: serverModule, transport: TransportKind.ipc },
+            debug: {
+                module: serverModule,
+                transport: TransportKind.ipc,
+            }
+        };
 
-    // Create the language client and start the client.
-    client = new LanguageClient(
-        'sagemathEnhanced',
-        'SageMath Enhanced',
-        serverOptions,
-        clientOptions
-    );
+        // Options to control the language client
+        const clientOptions: LanguageClientOptions = {
+            // Register the server for SageMath documents
+            documentSelector: [{ scheme: 'file', language: 'sage' }],
+            synchronize: {
+                // Notify the server about file changes to '.sage' files contained in the workspace
+                fileEvents: vscode.workspace.createFileSystemWatcher('**/*.sage')
+            }
+        };
 
-    // Start the client. This will also launch the server
-    client.start();
+        // Create the language client and start the client.
+        client = new LanguageClient(
+            'sagemathEnhanced',
+            'SageMath Enhanced',
+            serverOptions,
+            clientOptions
+        );
+
+        // Start the client. This will also launch the server
+        await client.start();
+    } catch (error) {
+        console.error('Error in startLanguageServer:', error);
+        throw error; // Re-throw to be caught by the calling function
+    }
 }
 
 export function deactivate(): Thenable<void> | undefined {
