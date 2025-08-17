@@ -292,7 +292,7 @@ my_function(Polyno
 P
 `;
 
-        const testUri = 'file:///test_completion.sage';
+        const testUri = 'file:///tests/test_completion.sage';
         await client.openDocument(testUri, testContent);
         
         // Wait a bit for document processing
