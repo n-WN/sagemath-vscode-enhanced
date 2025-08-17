@@ -3,7 +3,7 @@
   "publisher": "Lov3",
   "displayName": "SageMath Enhanced",
   "description": "An enhanced VS Code extension for SageMath, providing advanced features and integrations.",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "engines": {
     "vscode": "^1.76.0"
   },
