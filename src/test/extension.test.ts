@@ -12,4 +12,13 @@ suite('Extension Test Suite', () => {
 		assert.strictEqual(-1, [1, 2, 3].indexOf(5));
 		assert.strictEqual(-1, [1, 2, 3].indexOf(0));
 	});
+
+	test('Commands are registered', async () => {
+		// Get all available commands
+		const commands = await vscode.commands.getCommands();
+		
+		// Check that our commands are registered
+		assert.ok(commands.includes('runsagemathfile.run'), 'runsagemathfile.run command should be registered');
+		assert.ok(commands.includes('sagemathEnhanced.restartServer'), 'sagemathEnhanced.restartServer command should be registered');
+	});
 });
