@@ -24,6 +24,9 @@ out/
 **/tmp/
 **/dist/
 
+# 临时测试文件
+test_*.js
+
 # 排除不应被忽略的文件
 !.gitignore
 !.vscodeignore
