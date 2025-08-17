@@ -8,7 +8,10 @@
     "vscode": "^1.76.0"
   },
   "icon": "images/gptGenIcon.png",
-  "activationEvents": [],
+  "activationEvents": [
+    "onLanguage:sage",
+    "onCommand:runsagemathfile.run"
+  ],
   "categories": [
     "Programming Languages",
     "Extension Packs"
@@ -111,6 +114,10 @@
         }
       ],
       "commandPalette": [
+        {
+          "command": "runsagemathfile.run",
+          "when": "resourceLangId == sage"
+        },
         {
           "command": "sagemathEnhanced.restartServer",
           "when": "resourceLangId == sage"
