@@ -34,6 +34,7 @@ const SAGEMATH_BUILTINS = [
 	// Rings and Fields
 	'ZZ', 'QQ', 'RR', 'CC', 'GF', 'Zmod', 'PolynomialRing', 'NumberField',
 	'LaurentPolynomialRing', 'PowerSeriesRing', 'FractionField', 'QuotientRing',
+	'FiniteField', 'CyclotomicField', 'QuaternionAlgebra', 'MatrixAlgebra',
 	// Basic functions
 	'var', 'vars', 'SR', 'solve', 'factor', 'expand', 'simplify', 'diff', 'integrate',
 	// Polynomial operations
@@ -47,6 +48,10 @@ const SAGEMATH_BUILTINS = [
 	// Number theory
 	'gcd', 'lcm', 'is_prime', 'next_prime', 'prime_range', 'factorial',
 	'euler_phi', 'divisors', 'prime_divisors', 'factor_trial_division',
+	'legendre_symbol', 'jacobi_symbol', 'kronecker_symbol', 'quadratic_residues',
+	'continued_fraction', 'convergents', 'nth_prime', 'prime_pi', 'discrete_log',
+	// Lattice algorithms
+	'LLL', 'BKZ', 'hermite_form', 'smith_form',
 	// Combinatorics
 	'Permutations', 'Combinations', 'Partitions', 'binomial',
 	'catalan_number', 'fibonacci', 'lucas_number', 'stirling_number1', 'stirling_number2',
@@ -56,7 +61,8 @@ const SAGEMATH_BUILTINS = [
 	'Point', 'Line', 'Circle', 'Polygon', 'Polyhedron',
 	// Calculus
 	'limit', 'taylor', 'series', 'laplace', 'inverse_laplace',
-	'derivative', 'integral', 'sum', 'product',
+	'derivative', 'integral', 'sum', 'product', 'fourier_transform',
+	'laplace_transform', 'symbolic_sum', 'symbolic_product',
 	// Cryptography
 	'RSA', 'ElGamal', 'DiffieHellman', 'AES', 'DES',
 	// Elliptic curves
