@@ -11,8 +11,8 @@ run_automated_test() {
     echo "🤖 Running automated LSP completion test..."
     echo ""
     
-    if [ -f "test_lsp_completion.js" ]; then
-        node test_lsp_completion.js
+    if [ -f "tests/test_lsp_completion.js" ]; then
+        node tests/test_lsp_completion.js
         local exit_code=$?
         
         if [ $exit_code -eq 0 ]; then
@@ -52,7 +52,7 @@ run_manual_test() {
                 
                 # Open test file
                 echo "📂 Opening test file in VS Code..."
-                code test_poly_completion.sage
+                code tests/test_poly_completion.sage
                 
                 echo ""
                 echo "🎯 Manual Test Instructions:"
