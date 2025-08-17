@@ -31,7 +31,7 @@ class LSPClient {
      * Start the language server process
      */
     async startServer() {
-        const serverPath = path.join(__dirname, 'out', 'server', 'src', 'server.js');
+        const serverPath = path.join(__dirname, '..', 'out', 'server', 'src', 'server.js');
         
         if (!fs.existsSync(serverPath)) {
             throw new Error(`Server not found at ${serverPath}. Run 'npm run compile' first.`);
