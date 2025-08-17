@@ -216,11 +216,15 @@ function isPartialMatch(input, target) {
     if (targetLower.includes(inputLower)) {
         return true;
     }
+    // Prefix match (very high priority) 
+    if (targetLower.startsWith(inputLower)) {
+        return true;
+    }
     // Fuzzy match - check if all characters in input appear in order in target
     // But only if the input is reasonably short to avoid too many false positives
     // Allow fuzzy matching only if input length is at most 60% of target length, minimum 3
     const maxFuzzyLength = Math.max(3, Math.floor(targetLower.length * 0.6));
-    if (inputLower.length <= maxFuzzyLength) {
+    if (inputLower.length <= maxFuzzyLength && inputLower.length >= 2) {
         let targetIndex = 0;
         for (let i = 0; i < inputLower.length; i++) {
             const char = inputLower[i];
@@ -235,9 +239,14 @@ function isPartialMatch(input, target) {
     return false;
 }
 // This handler provides the initial list of the completion items.
-connection.onCompletion((textDocumentPosition) => {
+connection.onCompletion(async (textDocumentPosition) => {
     const document = documents.get(textDocumentPosition.textDocument.uri);
     if (!document) {
+        return [];
+    }
+    // Check if completion is enabled for this document
+    const settings = await getDocumentSettings(textDocumentPosition.textDocument.uri);
+    if (!settings.enableCompletion) {
         return [];
     }
     // Get the current word being typed
@@ -246,6 +255,22 @@ connection.onCompletion((textDocumentPosition) => {
     // Add filtered SageMath built-ins
     SAGEMATH_BUILTINS.forEach((builtin, index) => {
         if (isPartialMatch(currentWord, builtin)) {
+            // Enhanced sorting: prioritize important functions and exact prefix matches
+            let sortPriority = '1'; // Default priority
+            if (currentWord && builtin.toLowerCase().startsWith(currentWord.toLowerCase())) {
+                // Exact prefix match gets highest priority
+                sortPriority = '0';
+            }
+            else if (currentWord && builtin.toLowerCase().includes(currentWord.toLowerCase())) {
+                // Substring match gets medium priority
+                sortPriority = '0.5';
+            }
+            // Special handling for very important functions
+            const importantFunctions = ['PolynomialRing', 'matrix', 'plot', 'EllipticCurve', 'Graph'];
+            if (importantFunctions.includes(builtin) && isPartialMatch(currentWord, builtin)) {
+                // Boost priority for important functions
+                sortPriority = '0' + sortPriority;
+            }
             items.push({
                 label: builtin,
                 kind: node_1.CompletionItemKind.Function,
@@ -254,16 +279,18 @@ connection.onCompletion((textDocumentPosition) => {
                 documentation: `SageMath built-in function or class: ${builtin}`,
                 insertText: builtin,
                 filterText: builtin,
-                // Add sort text to prioritize exact matches
-                sortText: currentWord && builtin.toLowerCase().startsWith(currentWord.toLowerCase())
-                    ? '0' + builtin
-                    : '1' + builtin
+                sortText: sortPriority + builtin.toLowerCase()
             });
         }
     });
     // Add filtered common methods
     SAGEMATH_METHODS.forEach((method, index) => {
         if (isPartialMatch(currentWord, method)) {
+            // Consistent sorting for methods
+            let sortPriority = '2'; // Lower priority than built-ins
+            if (currentWord && method.toLowerCase().startsWith(currentWord.toLowerCase())) {
+                sortPriority = '1.5'; // Better than default methods but after built-ins
+            }
             items.push({
                 label: method,
                 kind: node_1.CompletionItemKind.Method,
@@ -272,10 +299,7 @@ connection.onCompletion((textDocumentPosition) => {
                 documentation: `Common SageMath method: ${method}`,
                 insertText: method,
                 filterText: method,
-                // Add sort text to prioritize exact matches
-                sortText: currentWord && method.toLowerCase().startsWith(currentWord.toLowerCase())
-                    ? '0' + method
-                    : '1' + method
+                sortText: sortPriority + method.toLowerCase()
             });
         }
     });
