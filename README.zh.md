@@ -84,6 +84,35 @@ https://github.com/n-WN/sagemath-vscode-enhanced/assets/30841158/2a8d5cea-8c21-4
 
 - **集成终端**：您的SageMath脚本输出以及任何错误或警告将显示在VS Code的集成终端中。这允许轻松调试和与您的代码交互。
 
+## 故障排除
+
+### SageMath未找到错误
+
+如果在尝试运行.sage文件时看到"SageMath未安装或在PATH中未找到"的错误消息：
+
+1. **安装SageMath**：如果您尚未安装SageMath，请访问[官方安装指南](https://doc.sagemath.org/html/en/installation/)。
+
+2. **配置路径**：如果已安装SageMath但不在系统PATH中：
+   - 打开VS Code设置（文件 > 首选项 > 设置）
+   - 搜索"SageMath Enhanced"
+   - 将`sagemathEnhanced.interpreterPath`设置为SageMath安装的完整路径
+   - 常见路径：
+     - Linux/macOS: `/usr/local/bin/sage` 或 `/opt/sage/sage`
+     - Windows: `C:\SageMath\sage.exe`
+
+3. **测试安装**：您可以通过打开终端并运行以下命令来测试SageMath是否正确配置：
+   ```bash
+   sage --version
+   ```
+
+### 语言服务器问题
+
+如果您在代码补全、悬停文档或诊断方面遇到问题：
+
+1. **重启语言服务器**：使用命令面板（`Ctrl+Shift+P`）并运行"重启SageMath语言服务器"
+2. **检查扩展状态**：在VS Code输出面板中查看任何错误消息（查看 > 输出，选择"SageMath Enhanced"）
+3. **验证文件关联**：确保您的文件具有`.sage`扩展名，并且语言模式设置为"SageMath"
+
 ## 要求
 
 - [Visual Studio Code](https://code.visualstudio.com/) 版本 1.76.0 或更高。

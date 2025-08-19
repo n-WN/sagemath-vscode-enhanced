@@ -83,6 +83,11 @@
           "enum": ["off", "error", "warn", "info", "debug"],
           "default": "info",
           "description": "Language server log level"
+        },
+        "sagemathEnhanced.dontShowSageWarning": {
+          "type": "boolean",
+          "default": false,
+          "description": "Don't show the SageMath installation warning on extension activation"
         }
       }
     },

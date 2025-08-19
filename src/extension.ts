@@ -1,6 +1,8 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
+import { exec } from 'child_process';
+import { promisify } from 'util';
 
 import {
     LanguageClient,
@@ -9,11 +11,52 @@ import {
     TransportKind
 } from 'vscode-languageclient/node';
 
+const execAsync = promisify(exec);
+
 let client: LanguageClient;
+
+/**
+ * Check if SageMath is available on the system
+ * @param sagePath Path to the SageMath interpreter
+ * @returns Promise<boolean> indicating if SageMath is available
+ */
+async function checkSageMathAvailability(sagePath: string): Promise<boolean> {
+    try {
+        // Try to run sage --version to check if it's available
+        const command = process.platform === 'win32' ? `where ${sagePath}` : `which ${sagePath}`;
+        await execAsync(command);
+        return true;
+    } catch (error) {
+        try {
+            // Fallback: try to run sage directly with --version
+            await execAsync(`${sagePath} --version`);
+            return true;
+        } catch (secondError) {
+            return false;
+        }
+    }
+}
+
+/**
+ * Show SageMath installation guidance to the user
+ */
+function showSageMathInstallationGuidance(): void {
+    const installMessage = 'SageMath is not installed or not found in PATH. Please install SageMath to run .sage files.';
+    const installButton = 'Installation Guide';
+    const configButton = 'Configure Path';
+    
+    vscode.window.showErrorMessage(installMessage, installButton, configButton).then(selection => {
+        if (selection === installButton) {
+            vscode.env.openExternal(vscode.Uri.parse('https://doc.sagemath.org/html/en/installation/'));
+        } else if (selection === configButton) {
+            vscode.commands.executeCommand('workbench.action.openSettings', 'sagemathEnhanced.interpreterPath');
+        }
+    });
+}
 
 export function activate(context: vscode.ExtensionContext) {
     // Register the run command first to ensure it's available even if language server fails
-    let runDisposable = vscode.commands.registerCommand('runsagemathfile.run', () => {
+    let runDisposable = vscode.commands.registerCommand('runsagemathfile.run', async () => {
         const editor = vscode.window.activeTextEditor;
         if (!editor) {
             console.log('No editor is active');
@@ -27,6 +70,13 @@ export function activate(context: vscode.ExtensionContext) {
         }
 
         const sagePath = vscode.workspace.getConfiguration().get('sagemathEnhanced.interpreterPath') as string;
+
+        // Check if SageMath is available before trying to run
+        const isSageAvailable = await checkSageMathAvailability(sagePath);
+        if (!isSageAvailable) {
+            showSageMathInstallationGuidance();
+            return;
+        }
 
         const filePath = document.fileName;
         const fileDir = path.dirname(filePath);
@@ -83,11 +133,50 @@ export function activate(context: vscode.ExtensionContext) {
 
     context.subscriptions.push(runDisposable, restartDisposable);
 
+    // Check SageMath availability on activation and show guidance if needed
+    checkSageMathAvailabilityOnActivation();
+
     // Start the Language Server asynchronously to avoid blocking command registration
     startLanguageServer(context).catch(error => {
         console.error('Failed to start SageMath Language Server:', error);
         vscode.window.showWarningMessage('SageMath Language Server failed to start. Some features may not be available.');
     });
+}
+
+/**
+ * Check SageMath availability when the extension activates
+ * Show a one-time informational message if SageMath is not available
+ */
+async function checkSageMathAvailabilityOnActivation(): Promise<void> {
+    try {
+        const sagePath = vscode.workspace.getConfiguration().get('sagemathEnhanced.interpreterPath') as string;
+        const isSageAvailable = await checkSageMathAvailability(sagePath);
+        
+        if (!isSageAvailable) {
+            // Only show this message if the user hasn't seen it before
+            const dontShowAgainKey = 'sagemathEnhanced.dontShowSageWarning';
+            const dontShowAgain = vscode.workspace.getConfiguration().get(dontShowAgainKey) as boolean;
+            
+            if (!dontShowAgain) {
+                const message = 'SageMath is not detected on your system. You can still use language features, but running .sage files requires SageMath installation.';
+                const installButton = 'Install SageMath';
+                const configButton = 'Configure Path';
+                const dontShowButton = "Don't Show Again";
+                
+                vscode.window.showInformationMessage(message, installButton, configButton, dontShowButton).then(selection => {
+                    if (selection === installButton) {
+                        vscode.env.openExternal(vscode.Uri.parse('https://doc.sagemath.org/html/en/installation/'));
+                    } else if (selection === configButton) {
+                        vscode.commands.executeCommand('workbench.action.openSettings', 'sagemathEnhanced.interpreterPath');
+                    } else if (selection === dontShowButton) {
+                        vscode.workspace.getConfiguration().update(dontShowAgainKey, true, vscode.ConfigurationTarget.Global);
+                    }
+                });
+            }
+        }
+    } catch (error) {
+        console.error('Error checking SageMath availability on activation:', error);
+    }
 }
 
 async function startLanguageServer(context: vscode.ExtensionContext): Promise<void> {

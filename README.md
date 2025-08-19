@@ -130,6 +130,35 @@ The extension provides several configuration options to customize your SageMath 
 
 You can configure these settings in your VS Code settings (File > Preferences > Settings) by searching for "SageMath Enhanced".
 
+## Troubleshooting
+
+### SageMath Not Found Error
+
+If you see an error message that "SageMath is not installed or not found in PATH" when trying to run .sage files:
+
+1. **Install SageMath**: If you haven't installed SageMath yet, visit the [official installation guide](https://doc.sagemath.org/html/en/installation/).
+
+2. **Configure Path**: If SageMath is installed but not in your system PATH:
+   - Open VS Code settings (File > Preferences > Settings)
+   - Search for "SageMath Enhanced"
+   - Set `sagemathEnhanced.interpreterPath` to the full path of your SageMath installation
+   - Common paths:
+     - Linux/macOS: `/usr/local/bin/sage` or `/opt/sage/sage`
+     - Windows: `C:\SageMath\sage.exe`
+
+3. **Test Installation**: You can test if SageMath is properly configured by opening a terminal and running:
+   ```bash
+   sage --version
+   ```
+
+### Language Server Issues
+
+If you experience problems with code completion, hover documentation, or diagnostics:
+
+1. **Restart Language Server**: Use Command Palette (`Ctrl+Shift+P`) and run "Restart SageMath Language Server"
+2. **Check Extension Status**: Look for any error messages in the VS Code Output panel (View > Output, select "SageMath Enhanced")
+3. **Verify File Association**: Ensure your file has the `.sage` extension and the language mode is set to "SageMath"
+
 ## Requirements
 
 - [Visual Studio Code](https://code.visualstudio.com/) version 1.76.0 or higher.
