@@ -9,8 +9,8 @@
   },
   "icon": "images/gptGenIcon.png",
   "activationEvents": [
-    "onLanguage:sage",
-    "onCommand:runsagemathfile.run"
+    "onCommand:runsagemathfile.run",
+    "onLanguage:sage"
   ],
   "categories": [
     "Programming Languages",
@@ -35,7 +35,8 @@
           "Sage"
         ],
         "extensions": [
-          ".sage"
+          ".sage",
+          ".sagews"
         ],
         "configuration": "./language-configuration.json"
       }

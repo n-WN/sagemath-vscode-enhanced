@@ -179,3 +179,10 @@ The extension now provides a solid foundation with proper LSP architecture. Futu
 ## Acknowledgements
 
 - Special thanks to the [SageMath](http://www.sagemath.org/) community for their invaluable resources and support.
+
+---
+
+<div align="center">
+  <b>Star ⭐ this repo if you find it useful!</b><br>
+  Made with ❤️ by the contributors team
+</div>
