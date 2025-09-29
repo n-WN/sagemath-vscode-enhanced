@@ -12,7 +12,10 @@ import {
 	TextDocumentSyncKind,
 	InitializeResult,
 	Hover,
-	MarkupKind
+	MarkupKind,
+	DocumentSymbol,
+	SymbolKind,
+	Range
 } from 'vscode-languageserver/node';
 
 import {
@@ -129,6 +132,15 @@ connection.onInitialize((params: InitializeParams) => {
 		};
 	}
 	return result;
+});
+
+connection.onDocumentSymbol(params => {
+	const document = documents.get(params.textDocument.uri);
+	if (!document) {
+		return [];
+	}
+
+	return parseDocumentSymbols(document);
 });
 
 connection.onInitialized(() => {
@@ -456,3 +468,98 @@ documents.listen(connection);
 
 // Listen on the connection
 connection.listen();
+
+interface SymbolMatch {
+	name: string;
+	detail: string;
+	kind: SymbolKind;
+}
+
+function matchSymbol(line: string): SymbolMatch | undefined {
+	const defMatch = line.match(/^def\s+([\w\.]+)\s*\(([^)]*)\)\s*:?/);
+	if (defMatch) {
+		const [, name, params] = defMatch;
+		return {
+			name,
+			detail: `(${params.trim()})`,
+			kind: SymbolKind.Function
+		};
+	}
+
+	const classMatch = line.match(/^class\s+([\w\.]+)\s*(\([^)]*\))?\s*:?/);
+	if (classMatch) {
+		const [, name, bases = ''] = classMatch;
+		return {
+			name,
+			detail: bases.trim(),
+			kind: SymbolKind.Class
+		};
+	}
+
+	const assignmentMatch = line.match(/^([A-Za-z_]\w*)\s*=\s*.+/);
+	if (assignmentMatch) {
+		const [, name] = assignmentMatch;
+		return {
+			name,
+			detail: 'assignment',
+			kind: SymbolKind.Variable
+		};
+	}
+
+	return undefined;
+}
+
+function buildRange(line: number, indent: number, length: number): Range {
+	return {
+		start: { line, character: indent },
+		end: { line, character: length }
+	};
+}
+
+function parseDocumentSymbols(textDocument: TextDocument): DocumentSymbol[] {
+	const rootSymbols: DocumentSymbol[] = [];
+	const stack: Array<{ indent: number; symbol: DocumentSymbol }> = [];
+
+	for (let line = 0; line < textDocument.lineCount; line++) {
+		const lineText = textDocument.getText({
+			start: { line, character: 0 },
+			end: { line: line + 1, character: 0 }
+		});
+		const content = lineText.replace(/\n$/, '');
+		const trimmed = content.trim();
+
+		if (!trimmed || trimmed.startsWith('#')) {
+			continue;
+		}
+
+		const symbolMatch = matchSymbol(trimmed);
+		if (!symbolMatch) {
+			continue;
+		}
+
+		const indent = content.length - content.trimStart().length;
+		const range = buildRange(line, indent, content.length);
+		const symbol: DocumentSymbol = {
+			name: symbolMatch.name,
+			detail: symbolMatch.detail,
+			kind: symbolMatch.kind,
+			range,
+			selectionRange: range,
+			children: []
+		};
+
+		while (stack.length && indent <= stack[stack.length - 1].indent) {
+			stack.pop();
+		}
+
+		if (stack.length) {
+			stack[stack.length - 1].symbol.children?.push(symbol);
+		} else {
+			rootSymbols.push(symbol);
+		}
+
+		stack.push({ indent, symbol });
+	}
+
+	return rootSymbols;
+}

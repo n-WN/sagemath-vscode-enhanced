@@ -11,80 +11,6 @@ import {
 
 let client: LanguageClient;
 
-class SageDocumentSymbolProvider implements vscode.DocumentSymbolProvider {
-    provideDocumentSymbols(document: vscode.TextDocument): vscode.ProviderResult<vscode.DocumentSymbol[]> {
-        const rootSymbols: vscode.DocumentSymbol[] = [];
-        const stack: Array<{ indent: number; symbol: vscode.DocumentSymbol }> = [];
-
-        for (let line = 0; line < document.lineCount; line++) {
-            const lineText = document.lineAt(line);
-            const trimmed = lineText.text.trim();
-
-            if (!trimmed || trimmed.startsWith('#')) {
-                continue;
-            }
-
-            const match = this.matchSymbol(trimmed);
-            if (!match) {
-                continue;
-            }
-
-            const indent = lineText.firstNonWhitespaceCharacterIndex;
-            const { name, detail, kind } = match;
-            const range = new vscode.Range(line, indent, line, lineText.range.end.character);
-            const symbol = new vscode.DocumentSymbol(name, detail, kind, range, range);
-
-            while (stack.length && indent <= stack[stack.length - 1].indent) {
-                stack.pop();
-            }
-
-            if (stack.length) {
-                stack[stack.length - 1].symbol.children.push(symbol);
-            } else {
-                rootSymbols.push(symbol);
-            }
-
-            stack.push({ indent, symbol });
-        }
-
-        return rootSymbols;
-    }
-
-    private matchSymbol(line: string): { name: string; detail: string; kind: vscode.SymbolKind } | undefined {
-        const defMatch = line.match(/^def\s+([\w\.]+)\s*\(([^)]*)\)\s*:?/);
-        if (defMatch) {
-            const [, name, params] = defMatch;
-            return {
-                name,
-                detail: `(${params.trim()})`,
-                kind: vscode.SymbolKind.Function,
-            };
-        }
-
-        const classMatch = line.match(/^class\s+([\w\.]+)\s*(\([^)]*\))?\s*:?/);
-        if (classMatch) {
-            const [, name, bases = ''] = classMatch;
-            return {
-                name,
-                detail: bases.trim(),
-                kind: vscode.SymbolKind.Class,
-            };
-        }
-
-        const assignmentMatch = line.match(/^([A-Za-z_]\w*)\s*=\s*.+/);
-        if (assignmentMatch) {
-            const [, name] = assignmentMatch;
-            return {
-                name,
-                detail: 'assignment',
-                kind: vscode.SymbolKind.Variable,
-            };
-        }
-
-        return undefined;
-    }
-}
-
 export function activate(context: vscode.ExtensionContext) {
     // Register the run command first to ensure it's available even if language server fails
     const runDisposable = vscode.commands.registerCommand('runsagemathfile.run', () => {
@@ -155,12 +81,7 @@ export function activate(context: vscode.ExtensionContext) {
         }
     });
 
-    const symbolProvider = vscode.languages.registerDocumentSymbolProvider(
-        { language: 'sage' },
-        new SageDocumentSymbolProvider()
-    );
-
-    context.subscriptions.push(runDisposable, restartDisposable, symbolProvider);
+    context.subscriptions.push(runDisposable, restartDisposable);
 
     // Start the Language Server asynchronously to avoid blocking command registration
     startLanguageServer(context).catch(error => {
