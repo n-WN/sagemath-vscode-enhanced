@@ -90,6 +90,32 @@ const SAGEMATH_METHODS = [
 	'save', 'load', 'show', 'latex', 'pretty_print'
 ];
 
+const SYMBOL_DOCUMENTATION: Record<string, string> = {
+	ZZ: 'The ring of integers. Example: `ZZ(5)` creates the integer 5 in the integer ring.',
+	QQ: 'The field of rational numbers. Example: `QQ(1/2)` creates the rational number 1/2.',
+	RR: 'The field of real numbers with arbitrary precision. Example: `RR(pi)`.',
+	CC: 'The field of complex numbers. Example: `CC(1, 2)` creates `1 + 2*I`.',
+	PolynomialRing: 'Creates a polynomial ring. Example: `R = PolynomialRing(QQ, "x"); x = R.gen()`.',
+	LaurentPolynomialRing: 'Creates a Laurent polynomial ring. Example: `R = LaurentPolynomialRing(QQ, "x")`.',
+	PowerSeriesRing: 'Creates a power series ring. Example: `R = PowerSeriesRing(QQ, "x")`.',
+	NumberField: 'Creates a number field. Example: `K = NumberField(x^2 - 2, "a")`.',
+	GF: 'Creates a finite field (Galois field). Example: `F = GF(7)` 或 `F = GF(2^8)`.',
+	EllipticCurve: 'Creates an elliptic curve. Example: `EllipticCurve([0, 0, 0, -1, 0])`.',
+	var: 'Creates symbolic variables. Example: `var("x y z")` creates symbolic variables x, y, z.',
+	matrix: 'Creates a matrix. Example: `matrix([[1, 2], [3, 4]])` creates a 2×2 matrix.',
+	plot: 'Plots functions. Example: `plot(sin(x), (x, 0, 2*pi))`.',
+	solve: 'Solves equations. Example: `solve(x^2 - 4 == 0, x)`.',
+	factor: 'Factors polynomials or integers. Example: `factor(x^2 - 4)`.',
+	integrate: 'Computes integrals. Example: `integrate(sin(x), x)`.',
+	diff: 'Computes derivatives. Example: `diff(sin(x), x)`.',
+	expand: 'Expands expressions. Example: `expand((x + 1)^3)`.',
+	simplify: 'Simplifies expressions. Example: `simplify(sin(x)^2 + cos(x)^2)`.',
+	Graph: 'Creates a graph. Example: `G = Graph(); G.add_edges([(1, 2), (2, 3)])`.',
+	gcd: 'Greatest common divisor. Example: `gcd(12, 18)`.',
+	is_prime: 'Primality test. Example: `is_prime(17)`.',
+	factorial: 'Computes factorial. Example: `factorial(5)`.'
+};
+
 connection.onInitialize((params: InitializeParams) => {
 	const capabilities = params.capabilities;
 
@@ -444,19 +470,26 @@ connection.onCompletionResolve(
 
 // Provide hover information
 connection.onHover(
-	(_textDocumentPosition: TextDocumentPositionParams): Hover | undefined => {
-		// This is a simplified hover provider
-		// In a real implementation, you'd parse the document to find what's under the cursor
+	(textDocumentPosition: TextDocumentPositionParams): Hover | undefined => {
+		const document = documents.get(textDocumentPosition.textDocument.uri);
+		if (!document) {
+			return undefined;
+		}
+
+		const word = getWordAtPosition(document, textDocumentPosition.position);
+		if (!word) {
+			return undefined;
+		}
+
+		const doc = SYMBOL_DOCUMENTATION[word];
+		if (!doc) {
+			return undefined;
+		}
+
 		return {
 			contents: {
 				kind: MarkupKind.Markdown,
-				value: [
-					'**SageMath Enhanced**',
-					'',
-					'Hover over SageMath symbols to get documentation.',
-					'',
-					'Use Ctrl+Space for code completion.'
-				].join('\n')
+				value: `**${word}**\n\n${doc}`
 			}
 		};
 	}
