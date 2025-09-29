@@ -12,7 +12,6 @@ vsc-extension-quickstart.md
 .DS_Store
 .vscodeignore
 # Additional files to exclude
-node_modules/**
 .git/**
 .github/**
 docs/**
